@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ASKSINGAPORE.AI — Just Ask</title>
+  <meta name="description" content="Your Singapore AI travel guide. Restaurants, hotels, car rentals and live directions — instant local answers, without the noise." />
+
+  <!-- Google Fonts: Cormorant Garamond (serif display) + Hanken Grotesk (UI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Hanken+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       Design tokens — deep emerald + gold concierge palette
+       ============================================================ */
+    :root {
+      --emerald-900: #042b22;
+      --emerald-800: #063a2e;
+      --emerald-700: #0a4d3c;
+      --emerald-600: #0c5a46;
+
+      --gold-100: #f7e7b8;
+      --gold-300: #ecd28a;
+      --gold-400: #e3c069;
+      --gold-500: #d4af52;
+      --gold-600: #c79e3e;
+
+      --ink: #eef5f1;
+      --ink-soft: rgba(238, 245, 241, 0.72);
+      --ink-faint: rgba(238, 245, 241, 0.5);
+
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-bg-strong: rgba(255, 255, 255, 0.07);
+      --hairline: rgba(227, 192, 105, 0.32);
+      --hairline-soft: rgba(227, 192, 105, 0.18);
+
+      --max-width: 1340px;
+
+      --font-display: "Cormorant Garamond", Georgia, serif;
+      --font-ui: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+
+      --gold-gradient: linear-gradient(135deg, #f7e7b8 0%, #e3c069 45%, #c79e3e 100%);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { min-height: 100%; }
+
+    body {
+      font-family: var(--font-ui);
+      color: var(--ink);
+      background:
+        radial-gradient(120% 90% at 85% 10%, rgba(227, 192, 105, 0.10) 0%, rgba(227, 192, 105, 0) 55%),
+        radial-gradient(100% 80% at 12% 90%, rgba(10, 77, 60, 0.55) 0%, rgba(10, 77, 60, 0) 60%),
+        linear-gradient(160deg, var(--emerald-800) 0%, var(--emerald-900) 100%);
+      background-attachment: fixed;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+
+    .shell {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 28px 40px 80px;
+    }
+
+    /* ============================================================
+       Top bar
+       ============================================================ */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid var(--hairline);
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle at 35% 30%, rgba(227, 192, 105, 0.18), rgba(227, 192, 105, 0) 70%);
+      flex-shrink: 0;
+    }
+    .mark .diamond {
+      width: 13px;
+      height: 13px;
+      transform: rotate(45deg);
+      background: var(--gold-gradient);
+      border-radius: 2px;
+      box-shadow: 0 0 12px rgba(227, 192, 105, 0.45);
+    }
+
+    .wordmark {
+      font-family: var(--font-ui);
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      font-size: 0.95rem;
+      color: var(--ink);
+    }
+    .wordmark .ai { color: var(--gold-400); }
+
+    .availability {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      font-weight: 500;
+      color: var(--ink-soft);
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6);
+      animation: pulse 2.4s infinite;
+    }
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.55); }
+      70%  { box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+    }
+
+    /* ============================================================
+       Hero row (non-wrapping flex, vertically centered)
+       ============================================================ */
+    .hero {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 64px;
+      min-height: calc(100vh - 200px);
+      padding-top: 24px;
+    }
+
+    .hero-left { flex: 1 1 auto; min-width: 0; }
+    .hero-right { flex: 0 0 auto; }
+
+    .eyebrow {
+      font-size: 0.74rem;
+      letter-spacing: 0.34em;
+      font-weight: 600;
+      color: var(--gold-400);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .display {
+      font-family: var(--font-display);
+      font-weight: 600;
+      line-height: 0.92;
+      font-size: clamp(5rem, 13vw, 12rem);
+      letter-spacing: -0.01em;
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 36px;
+    }
+    .display span { display: block; }
+
+    /* ============================================================
+       Glass "Effortless" card
+       ============================================================ */
+    .effortless-card {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 22px 28px;
+      border-radius: 18px;
+      border: 1px solid var(--hairline-soft);
+      background: var(--glass-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      max-width: 360px;
+    }
+    .effortless-card .label {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.55rem;
+      color: var(--gold-300);
+      line-height: 1.1;
+    }
+    .effortless-card .sub {
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.01em;
+    }
+
+    /* ============================================================
+       Chat window (glass)
+       ============================================================ */
+    .chat {
+      width: 410px;
+      max-width: 100%;
+      border-radius: 24px;
+      border: 1px solid var(--hairline);
+      background: var(--glass-bg-strong);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      box-shadow:
+        0 30px 80px -30px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .chat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .chat-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.66rem;
+      letter-spacing: 0.16em;
+      font-weight: 600;
+      color: var(--ink-soft);
+    }
+    .chat-status .live {
+      color: #4ade80;
+      font-size: 0.7rem;
+    }
+    .chat-actions { display: flex; gap: 8px; }
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--hairline-soft);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--ink-soft);
+      display: grid;
+      place-items: center;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .icon-btn:hover { border-color: var(--hairline); color: var(--gold-300); }
+    .icon-btn svg { width: 15px; height: 15px; }
+
+    .chat-title {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1.7rem;
+      line-height: 1.12;
+      color: var(--ink);
+    }
+
+    .bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .bullet {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+    }
+    .bullet::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold-400);
+      flex-shrink: 0;
+    }
+
+    .divider {
+      height: 1px;
+      border: none;
+      background: linear-gradient(90deg, rgba(227, 192, 105, 0) 0%, var(--hairline) 50%, rgba(227, 192, 105, 0) 100%);
+    }
+
+    .bubble {
+      align-self: flex-start;
+      max-width: 92%;
+      padding: 13px 16px;
+      border-radius: 16px 16px 16px 4px;
+      background: rgba(227, 192, 105, 0.08);
+      border: 1px solid var(--hairline-soft);
+      font-size: 0.92rem;
+      color: var(--ink);
+      line-height: 1.45;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+    .chip {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--hairline-soft);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--ink);
+      font-size: 0.82rem;
+      font-weight: 500;
+      transition: border-color 0.2s, background 0.2s, transform 0.1s;
+    }
+    .chip:hover { border-color: var(--hairline); background: rgba(227, 192, 105, 0.10); }
+    .chip:active { transform: translateY(1px); }
+
+    .caption {
+      font-size: 0.72rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.01em;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .input-row input {
+      flex: 1 1 auto;
+      min-width: 0;
+      padding: 13px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--hairline-soft);
+      background: rgba(0, 0, 0, 0.18);
+      color: var(--ink);
+      font-family: var(--font-ui);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .input-row input::placeholder { color: var(--ink-faint); }
+    .input-row input:focus { border-color: var(--hairline); }
+
+    .send-btn {
+      flex-shrink: 0;
+      padding: 13px 22px;
+      border-radius: 12px;
+      border: none;
+      background: var(--gold-gradient);
+      color: #2a1f06;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.02em;
+      transition: filter 0.2s, transform 0.1s;
+    }
+    .send-btn:hover { filter: brightness(1.06); }
+    .send-btn:active { transform: translateY(1px); }
+
+    .disclaimer {
+      font-size: 0.68rem;
+      color: var(--ink-faint);
+      line-height: 1.4;
+    }
+
+    /* ============================================================
+       Below-hero centered section
+       ============================================================ */
+    .closing {
+      max-width: 720px;
+      margin: 120px auto 0;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 26px;
+    }
+    .closing .guide {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      color: var(--gold-300);
+      line-height: 1.15;
+    }
+    .closing .lede {
+      font-size: 1.05rem;
+      color: var(--ink-soft);
+      max-width: 560px;
+      line-height: 1.6;
+    }
+    .closing .tagline {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.3rem;
+      color: var(--ink-soft);
+      max-width: 560px;
+      line-height: 1.4;
+    }
+
+    /* ============================================================
+       Floating CTA pill
+       ============================================================ */
+    .cta-pill {
+      position: fixed;
+      right: 28px;
+      bottom: 28px;
+      z-index: 50;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 24px;
+      border-radius: 999px;
+      border: none;
+      background: var(--gold-gradient);
+      color: #2a1f06;
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: 0.01em;
+      box-shadow: 0 16px 40px -12px rgba(227, 192, 105, 0.5);
+      transition: transform 0.15s, filter 0.2s;
+    }
+    .cta-pill:hover { filter: brightness(1.06); transform: translateY(-2px); }
+    .cta-pill .diamond {
+      width: 10px; height: 10px;
+      transform: rotate(45deg);
+      background: #2a1f06;
+      border-radius: 2px;
+    }
+
+    /* ============================================================
+       Responsive — hero allowed to stack on narrow screens
+       ============================================================ */
+    @media (max-width: 980px) {
+      .shell { padding: 24px 22px 80px; }
+      .hero {
+        flex-wrap: wrap;
+        gap: 48px;
+        min-height: auto;
+        padding-top: 48px;
+      }
+      .hero-left, .hero-right { flex: 1 1 100%; }
+      .chat { width: 100%; }
+      .display { font-size: clamp(4.5rem, 22vw, 8rem); }
+      .closing { margin-top: 90px; }
+    }
+    @media (max-width: 520px) {
+      .availability span.text { display: none; }
+      .cta-pill { right: 16px; bottom: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- ===================== TOP BAR ===================== -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="mark" aria-hidden="true"><span class="diamond"></span></span>
+        <span class="wordmark">ASKSINGAPORE<span class="ai">.AI</span></span>
+      </div>
+      <div class="availability">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="text">AVAILABLE 24 / 7</span>
+      </div>
+    </header>
+
+    <!-- ===================== HERO ===================== -->
+    <main class="hero">
+
+      <!-- LEFT -->
+      <section class="hero-left">
+        <p class="eyebrow">SINGAPORE · AI CONCIERGE</p>
+        <h1 class="display">
+          <span>Just</span>
+          <span>Ask</span>
+        </h1>
+        <div class="effortless-card">
+          <span class="label">Effortless</span>
+          <span class="sub">No app. No sign-up. Just answers.</span>
+        </div>
+      </section>
+
+      <!-- RIGHT — glass chat window -->
+      <aside class="hero-right">
+        <div class="chat">
+
+          <div class="chat-header">
+            <div class="chat-status">
+              <span class="live">●</span>
+              <span>LIVE NOW · ASK SINGAPORE AI</span>
+            </div>
+            <div class="chat-actions">
+              <button class="icon-btn" aria-label="Refresh conversation">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+              </button>
+              <button class="icon-btn" aria-label="More options">
+                <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <h2 class="chat-title">AI Singapore Concierge.<br />Instant local answers, without the noise.</h2>
+
+          <div class="bullets">
+            <div class="bullet">Start with your area,</div>
+            <div class="bullet">your mood,</div>
+            <div class="bullet">or what you need right now.</div>
+          </div>
+
+          <hr class="divider" />
+
+          <div class="bubble">Hi! I'm your local Singapore AI. Ask me anything.</div>
+
+          <div class="chips">
+            <button class="chip" data-prefill="Restaurants">Restaurants</button>
+            <button class="chip" data-prefill="Hotels">Hotels</button>
+            <button class="chip" data-prefill="Car rental">Car rental</button>
+            <button class="chip" data-prefill="Directions">Directions</button>
+          </div>
+
+          <p class="caption">Live local data · Directions open in Google Maps</p>
+
+          <div class="input-row">
+            <!-- TODO: wire to backend stub — chat/AI/network logic connected separately later -->
+            <input id="ask-input" type="text" placeholder="Where to eat tonight?" autocomplete="off" />
+            <button id="ask-send" class="send-btn">Send</button>
+          </div>
+
+          <p class="disclaimer">AI answers may need verification for schedules, prices and availability.</p>
+
+        </div>
+      </aside>
+
+    </main>
+
+    <!-- ===================== CLOSING ===================== -->
+    <section class="closing">
+      <p class="guide">your Singapore AI travel guide.</p>
+      <p class="lede">Restaurants, hotels, car rentals and live directions — instant local answers, without the noise.</p>
+      <div class="effortless-card">
+        <span class="label">Effortless</span>
+        <span class="sub">No app. No sign-up. Just answers.</span>
+      </div>
+      <p class="tagline">Your AI concierge, made for Singapore, in your pocket — ready any time, any day.</p>
+    </section>
+
+  </div>
+
+  <!-- ===================== FLOATING CTA ===================== -->
+  <!-- TODO: wire to backend stub — opens chat / launches concierge later -->
+  <button id="cta-ask" class="cta-pill">
+    <span class="diamond" aria-hidden="true"></span>
+    Ask Singapore AI
+  </button>
+
+  <script>
+    // ============================================================
+    // DESIGN-ONLY behaviour.
+    // No chat / AI / network logic here — the backend is connected
+    // separately later. The hooks below are intentionally minimal.
+    // ============================================================
+
+    (function () {
+      var input = document.getElementById('ask-input');
+
+      // Category chips only prefill the input for now.
+      document.querySelectorAll('.chip').forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          input.value = chip.getAttribute('data-prefill') || chip.textContent.trim();
+          input.focus();
+        });
+      });
+
+      // Send button — placeholder hook only.
+      // TODO: wire to backend stub (submit input.value to the concierge).
+      document.getElementById('ask-send').addEventListener('click', function () {
+        // Intentionally no chat logic yet.
+      });
+
+      // Floating CTA — placeholder hook only.
+      // TODO: wire to backend stub (open the concierge experience).
+      document.getElementById('cta-ask').addEventListener('click', function () {
+        input.focus();
+      });
+    })();
+  </script>
+</body>
+</html>
