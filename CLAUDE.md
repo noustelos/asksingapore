@@ -41,7 +41,7 @@ The inline `<script>` drives presentation feedback only — there is still no ch
 
 - **Send button** toggles `.is-ready` (glow) when `#ask-input` holds text, and replays a `.spark` sweep on click.
 - **Adaptive background** — `detectTheme()` matches query keywords and swaps a `theme-nature` / `theme-luxury` class on `.hero`, which re-skins the `.deco-weave` pattern (leaf texture / silk sheen) via a brief `weave-shift` dissolve. Keyword→theme maps live in the `THEMES` array.
-- **Live SGT clock** — `#sgt-clock` in the topbar shows current Singapore time via `Intl.DateTimeFormat({ timeZone: 'Asia/Singapore' })` (computed locally, no network), refreshed on a 15s interval. Editorial treatment: a large light-weight `.clock-time` numeral with a dimmed `.cc` colon, over a small tracked `.clock-meta` line (live dot · `SGT` · "24/7 Islandwide Availability"). `tickClock()` writes the `HH<span class="cc">:</span>MM` markup each tick.
+- **Live SGT clock** — `#sgt-date` + `#sgt-clock` in the topbar show the current Singapore date and time via `Intl.DateTimeFormat({ timeZone: 'Asia/Singapore' })` (computed locally, no network), refreshed on a 15s interval. Editorial lockup, top to bottom: a gold light-weight `.clock-date` line, the large light `.clock-time` numeral with a dimmed `.cc` colon, then a small tracked `.clock-meta` line (live dot · `SGT` · "24/7 Islandwide Availability"). `tickClock()` writes both the date text and the `HH<span class="cc">:</span>MM` markup each tick.
 
 ### Backend wiring hooks (placeholders only)
 
@@ -51,3 +51,4 @@ The inline `<script>` is intentionally minimal. These IDs/hooks exist for the ba
 - `#ask-send` — Send button (no logic yet)
 - `#cta-ask` — floating CTA pill
 - `.chip[data-prefill]` — category chips that currently only **prefill** `#ask-input`
+- `#sgt-temp` — local-weather line under the clock; a static mockup (`29°C · Partly Cloudy`) awaiting live data (real weather needs an API, which is out of the design-only scope)
