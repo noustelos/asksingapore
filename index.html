@@ -9,7 +9,7 @@
   <!-- Google Fonts: Cormorant Garamond (serif display) + Hanken Grotesk (UI) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Hanken+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Hanken+Grotesk:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
     /* ============================================================
@@ -70,8 +70,21 @@
       0%   { background-position: 0% 50%; }
       100% { background-position: 200% 50%; }
     }
+    /* Send button comes alive when the input holds text */
+    @keyframes scSendGlow {
+      0%, 100% { box-shadow: 0 6px 18px -6px rgba(227,185,166,0.55), 0 0 0 0 rgba(232,211,160,0); }
+      50%      { box-shadow: 0 6px 22px -5px rgba(227,185,166,0.8), 0 0 18px 1px rgba(232,211,160,0.5); }
+    }
+    /* a tiny spark sweeps across on click */
+    @keyframes scSendSpark {
+      0%   { transform: translateX(-130%) skewX(-18deg); opacity: 0; }
+      18%  { opacity: 0.9; }
+      100% { transform: translateX(240%) skewX(-18deg); opacity: 0; }
+    }
     @media (prefers-reduced-motion: reduce) {
-      .mark, .mark .diamond, .display { animation: none !important; }
+      .mark, .mark .diamond, .display, .send-btn, .availability .dot { animation: none !important; }
+      .send-btn::after { display: none; }
+      .deco-weave { transition: none !important; }
     }
 
     /* ============================================================
@@ -112,7 +125,25 @@
       background-size: 48px 48px;
       opacity: 0.04;
       mix-blend-mode: screen;
+      /* enables the gentle dissolve when the query shifts the theme */
+      transition: opacity .55s ease;
     }
+    /* Adaptive theme: the environment responds to the query.
+       'nature' (running routes, botanic gardens) → tree-leaf texture. */
+    .hero.theme-nature .deco-weave {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='52' viewBox='0 0 40 52'%3E%3Cg fill='none' stroke='%23bfe3c2' stroke-width='1'%3E%3Cpath d='M20 4 C32 14 32 34 20 48 C8 34 8 14 20 4 Z'/%3E%3Cpath d='M20 8 L20 44'/%3E%3Cpath d='M20 18 L11 14 M20 18 L29 14 M20 28 L11 24 M20 28 L29 24 M20 38 L13 35 M20 38 L27 35'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: 40px 52px;
+      opacity: 0.06;
+    }
+    /* 'luxury' (luxury shopping, Orchard) → fine silk-sheen weave. */
+    .hero.theme-luxury .deco-weave {
+      background-image: repeating-linear-gradient(45deg, rgba(232,211,160,0.6) 0 1px, transparent 1px 8px),
+                        repeating-linear-gradient(-45deg, rgba(227,185,166,0.4) 0 1px, transparent 1px 8px);
+      background-size: auto;
+      opacity: 0.05;
+    }
+    /* mid-dissolve: weave fades out before the pattern swaps in */
+    .hero.weave-shift .deco-weave { opacity: 0 !important; }
     .deco-fade { left: 0; right: 0; bottom: 0; height: 200px; background: linear-gradient(180deg, transparent, rgba(3,15,11,0.55)); }
 
     .inner {
@@ -155,12 +186,32 @@
       -webkit-background-clip: text; background-clip: text; color: transparent;
     }
     .wordmark .tld { color: rgba(243,236,220,0.72); }
-    .availability {
-      display: flex; align-items: center; gap: 9px;
-      font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
-      color: rgba(243,236,220,0.55);
+    /* ---- live Singapore clock: editorial / wallpaper-magazine treatment ---- */
+    .availability { display: flex; align-items: center; }
+    .clock { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; line-height: 1; }
+    .clock-time {
+      /* airy, light grotesque numerals — reads like a luxury timepiece */
+      font-family: var(--font-ui); font-weight: 200;
+      font-size: 34px; letter-spacing: 0.04em;
+      font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1;
+      color: var(--ink);
     }
-    .availability .dot { width: 6px; height: 6px; border-radius: 50%; background: #5fcf8e; }
+    .clock-time .cc { /* dimmed colon, watch-style */
+      color: rgba(243,236,220,0.34); font-weight: 200; margin: 0 0.04em;
+    }
+    .clock-meta {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 9.5px; font-weight: 500; letter-spacing: 0.26em; text-transform: uppercase;
+      color: rgba(243,236,220,0.42);
+    }
+    .clock-meta .dot {
+      width: 5px; height: 5px; border-radius: 50%; background: #5fcf8e;
+      animation: scLivePulse 2.4s ease-out infinite;
+    }
+    .clock-meta .sgt-tz { color: var(--gold); }
+    .clock-meta .hair { /* thin rule between zone and availability */
+      width: 14px; height: 1px; background: rgba(198,166,98,0.45);
+    }
 
     /* ---- main ---- */
     .main {
@@ -195,41 +246,51 @@
         var(--title-grad);
       background-size: 200% 100%, 100% 100%;
       -webkit-background-clip: text; background-clip: text; color: transparent;
-      /* metallic bevel: a bright top edge and a dark engraved base */
-      text-shadow:
-        0 1px 0 rgba(255,245,220,0.25),
-        0 2px 1px rgba(0,0,0,0.28),
-        0 0 22px rgba(198,166,98,0.18);
+      /* depth via drop-shadow (follows the glyph fill, so thin curves
+         like the J's tail stay solid — no grey text-shadow fringe) */
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.30));
       animation: scTitleSheen 7s linear infinite;
     }
 
-    /* effortless glass card (used twice) */
+    /* effortless glass card — the USP subtitle directly under the title.
+       Width hugs the copy (fit-content) so the panel never looks oversized
+       relative to its text. */
     .effortless {
-      width: 100%; max-width: 340px;
-      padding: 16px 18px; border-radius: 15px;
+      width: fit-content; max-width: 100%;
+      padding: 16px 22px; border-radius: 15px;
       border: 1px solid rgba(198,166,98,0.24);
       background: linear-gradient(150deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
       backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
       text-align: left;
     }
-    .hero-left .effortless { margin-top: 30px; }
-    .effortless .label-row { display: flex; align-items: center; gap: 9px; margin-bottom: 7px; }
+    /* direct subtitle: ties the action (Just Ask) to the ease (No app…) */
+    .hero-left .effortless { margin-top: 20px; }
+    .effortless .label-row { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
     .effortless .pip { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
-    .effortless .label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
-    .effortless .sub { font-size: 15px; font-weight: 500; color: var(--ink); }
+    .effortless .label { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+    .effortless .sub { font-size: 17px; font-weight: 500; color: var(--ink); }
 
     /* ---- chat window (right) ---- */
     .hero-right { flex: 0 1 414px; min-width: 270px; width: 100%; max-width: 421px; }
     .chat-frame {
-      position: relative; border-radius: 24px; padding: 1px;
+      position: relative; border-radius: 28px; padding: 1px;
       background: linear-gradient(155deg, rgba(232,211,160,0.7), rgba(198,166,98,0.16) 38%, rgba(232,211,160,0.42));
-      box-shadow: 0 40px 90px -30px rgba(0,0,0,0.7), 0 2px 0 rgba(255,255,255,0.04) inset;
+      /* elevation: soft, low-opacity dark-jade shadow with wide blur lifts
+         the card so it 'floats' just above the background */
+      box-shadow:
+        0 48px 100px -34px rgba(2,12,9,0.85),
+        0 18px 46px -28px rgba(6,28,22,0.65),
+        0 2px 0 rgba(255,255,255,0.04) inset;
     }
     .chat {
-      border-radius: 23px; padding: 24px 24px 22px;
+      border-radius: 27px; padding: 24px 24px 22px;
       background: linear-gradient(165deg, rgba(16,55,45,0.92), rgba(9,36,29,0.95));
       backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
       overflow: hidden;
+      /* inner champagne glow: the edges 'catch the light' like glass/brushed metal */
+      box-shadow:
+        inset 0 1px 0 rgba(243,236,220,0.22),
+        inset 0 0 30px rgba(232,211,160,0.11);
     }
 
     .chat-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
@@ -289,13 +350,28 @@
     .chip {
       cursor: pointer;
       border: 1px solid rgba(198,166,98,0.34);
-      background: rgba(198,166,98,0.06);
+      background: linear-gradient(180deg, rgba(198,166,98,0.10), rgba(198,166,98,0.04));
       color: rgba(243,236,220,0.86);
       font-family: var(--font-ui); font-size: 12.5px; letter-spacing: 0.02em;
       padding: 8px 14px; border-radius: 999px;
-      transition: all .18s ease;
+      /* raised, physically pressable */
+      box-shadow: 0 2px 6px -2px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.07);
+      transition: transform .16s ease, box-shadow .16s ease,
+                  background .18s ease, border-color .18s ease, color .18s ease;
     }
-    .chip:hover { border-color: rgba(232,211,160,0.8); background: rgba(198,166,98,0.16); color: #fff; }
+    .chip:hover {
+      border-color: rgba(232,211,160,0.8);
+      background: linear-gradient(180deg, rgba(198,166,98,0.22), rgba(198,166,98,0.10));
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 9px 20px -7px rgba(0,0,0,0.6),
+                  0 0 16px -5px rgba(232,211,160,0.45),
+                  inset 0 1px 0 rgba(255,255,255,0.14);
+    }
+    .chip:active {
+      transform: translateY(0);
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04);
+    }
     .caption { margin-top: 11px; font-size: 11px; letter-spacing: 0.04em; color: rgba(243,236,220,0.4); }
 
     .input-row {
@@ -308,15 +384,31 @@
       color: var(--ink); font-family: var(--font-ui); font-size: 14.5px;
     }
     .send-btn {
+      position: relative; overflow: hidden;
       flex: 0 0 auto; cursor: pointer; border: none;
       padding: 11px 22px; border-radius: 999px;
       font-family: var(--font-ui); font-weight: 600; font-size: 13.5px; letter-spacing: 0.02em;
       color: #06231b; background: var(--send-grad);
       box-shadow: 0 6px 18px -6px rgba(227,185,166,0.55);
-      transition: background .18s ease;
+      transition: background .18s ease, transform .1s ease, box-shadow .2s ease;
     }
     .send-btn:hover { background: var(--send-grad-hover); }
-    .disclaimer { margin: 14px 2px 0; font-size: 11.5px; line-height: 1.5; color: rgba(243,236,220,0.42); }
+    /* glowing while there is something to send */
+    .send-btn.is-ready { animation: scSendGlow 2.2s ease-in-out infinite; }
+    /* physical press-and-release */
+    .send-btn:active { transform: scale(0.95); }
+    /* spark sweep, toggled by JS on click */
+    .send-btn::after {
+      content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 45%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+      transform: translateX(-130%) skewX(-18deg); opacity: 0; pointer-events: none;
+    }
+    .send-btn.spark::after { animation: scSendSpark .6s ease-out; }
+    .disclaimer {
+      margin: 22px 2px 0; font-size: 11px; line-height: 1.5;
+      letter-spacing: 0.02em; color: rgba(243,236,220,0.30);
+    }
+    .disclaimer .live-data { color: rgba(232,211,160,0.55); font-weight: 500; }
 
     /* ---- below: subhead, panel, tagline ---- */
     .closing { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; }
@@ -357,7 +449,7 @@
     @media (max-width: 760px) {
       .hero-row { flex-wrap: wrap; }
       .hero-left, .hero-right { flex: 1 1 100%; max-width: 100%; }
-      .hero-left .effortless, .closing .effortless { margin-left: auto; margin-right: auto; }
+      .hero-left .effortless { margin-left: auto; margin-right: auto; }
     }
   </style>
 </head>
@@ -381,9 +473,16 @@
           <span class="mark" aria-hidden="true"><span class="diamond"></span></span>
           <div class="wordmark"><span class="name">ASKSINGAPORE</span><span class="tld">.AI</span></div>
         </div>
-        <div class="availability">
-          <span class="dot" aria-hidden="true"></span>
-          Available 24 / 7
+        <div class="availability" aria-label="Singapore time — 24/7 islandwide availability">
+          <div class="clock">
+            <span class="clock-time" id="sgt-clock">--<span class="cc">:</span>--</span>
+            <span class="clock-meta">
+              <span class="dot" aria-hidden="true"></span>
+              <span class="sgt-tz">SGT</span>
+              <span class="hair" aria-hidden="true"></span>
+              24/7 Islandwide Availability
+            </span>
+          </div>
         </div>
       </header>
 
@@ -456,7 +555,7 @@
                   <button id="ask-send" class="send-btn">Send</button>
                 </div>
 
-                <p class="disclaimer">AI answers may need verification for schedules, prices and availability.</p>
+                <p class="disclaimer"><span class="live-data">Live Local Data</span> · Verification recommended for event schedules and dynamic pricing.</p>
 
               </div>
             </div>
@@ -469,10 +568,6 @@
           <div>
             <p class="guide">your Singapore AI travel guide.</p>
             <p class="lede">Restaurants, hotels, car rentals and live directions — instant local answers, without the noise.</p>
-          </div>
-          <div class="effortless">
-            <div class="label-row"><span class="pip"></span><span class="label">Effortless</span></div>
-            <div class="sub">No app. No sign-up. Just answers.</div>
           </div>
           <p class="tagline">Your AI concierge, made for Singapore, in your pocket — ready any time, any day.</p>
         </div>
@@ -497,19 +592,80 @@
     // ============================================================
     (function () {
       var input = document.getElementById('ask-input');
+      var send  = document.getElementById('ask-send');
+      var hero  = document.querySelector('.hero');
+
+      // --- Live Singapore clock (SGT) — computed locally, no network ---
+      var clock = document.getElementById('sgt-clock');
+      var sgtFmt = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Asia/Singapore', hour: '2-digit', minute: '2-digit', hour12: false
+      });
+      function tickClock() {
+        if (!clock) return;
+        var hm = sgtFmt.format(new Date()).split(':'); // ["19","42"]
+        clock.innerHTML = hm[0] + '<span class="cc">:</span>' + hm[1];
+      }
+      tickClock();
+      window.setInterval(tickClock, 15000);
+
+      // --- Send button: glow while there is something to send ---
+      function refreshSendState() {
+        send.classList.toggle('is-ready', input.value.trim().length > 0);
+      }
+
+      // --- Send button: replay the spark sweep on demand ---
+      function sparkSend() {
+        send.classList.remove('spark');
+        void send.offsetWidth; // force reflow so the animation can restart
+        send.classList.add('spark');
+      }
+      send.addEventListener('animationend', function (e) {
+        if (e.animationName === 'scSendSpark') send.classList.remove('spark');
+      });
+
+      // --- Adaptive background: shift the weave to match the query ---
+      // Visual response only (no AI/network). Keywords map to a theme.
+      var THEMES = [
+        { name: 'theme-nature', re: /\b(run|running|route|routes|jog|jogging|botanic|garden|gardens|park|parks|nature|trail|trails|hike|hiking|cycl|trees?)\b/ },
+        { name: 'theme-luxury', re: /\b(luxury|shopping|shop|orchard|boutique|designer|mall|fashion|jewel|jewellery|jewelry|watch|watches|couture)\b/ }
+      ];
+      var currentTheme = '';
+      function detectTheme(text) {
+        var q = text.toLowerCase();
+        for (var i = 0; i < THEMES.length; i++) if (THEMES[i].re.test(q)) return THEMES[i].name;
+        return '';
+      }
+      function applyTheme(next) {
+        if (next === currentTheme) return;
+        currentTheme = next;
+        // gentle dissolve: fade the weave out, swap the pattern, fade back in
+        hero.classList.add('weave-shift');
+        window.setTimeout(function () {
+          hero.classList.remove('theme-nature', 'theme-luxury');
+          if (next) hero.classList.add(next);
+          hero.classList.remove('weave-shift');
+        }, 280);
+      }
+
+      input.addEventListener('input', function () {
+        refreshSendState();
+        applyTheme(detectTheme(input.value));
+      });
 
       // Category chips only prefill the input (prefill text from the source design).
       document.querySelectorAll('.chip').forEach(function (chip) {
         chip.addEventListener('click', function () {
           input.value = chip.getAttribute('data-prefill') || chip.textContent.trim();
           input.focus();
+          refreshSendState();
+          applyTheme(detectTheme(input.value));
         });
       });
 
       // Send button — placeholder hook only.
       // TODO: wire to backend stub (submit input.value to the concierge).
-      document.getElementById('ask-send').addEventListener('click', function () {
-        // Intentionally no chat logic yet.
+      send.addEventListener('click', function () {
+        sparkSend(); // physical, "powerful" feedback — no chat logic yet.
       });
 
       // Floating CTA — placeholder hook only.

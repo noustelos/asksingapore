@@ -33,7 +33,15 @@ All design decisions are centralized as CSS custom properties in `:root` (the **
 - `--diamond-grad`, `--wordmark-grad`, `--title-grad`, `--send-grad(-hover)` — the gold/rosé gradients reused across the brand mark, wordmark, "Just Ask" title, and Send button.
 - `--font-display` (Cormorant Garamond, serif display) and `--font-ui` (Hanken Grotesk) — loaded from Google Fonts in `<head>`.
 
-Animations are defined as `@keyframes sc*` near the top of the `<style>` block (e.g. `scTitleSheen` title sheen, `scMarkShimmer`/`scDiamondPulse` "living" logo, `scLivePulse`, `scGlowDrift`). All motion is gated behind a `prefers-reduced-motion: reduce` guard — extend that rule when adding new animations. Layout is non-wrapping by design and only stacks below the `max-width: 760px` media query.
+Animations are defined as `@keyframes sc*` near the top of the `<style>` block (e.g. `scTitleSheen` title sheen, `scMarkShimmer`/`scDiamondPulse` "living" logo, `scSendGlow`/`scSendSpark` Send-button feedback, `scLivePulse`, `scGlowDrift`). All motion is gated behind a `prefers-reduced-motion: reduce` guard — extend that rule when adding new animations. Layout is non-wrapping by design and only stacks below the `max-width: 760px` media query.
+
+### Interactive behaviour (visual-only, no network)
+
+The inline `<script>` drives presentation feedback only — there is still no chat/AI/network logic. Keep additions on this side of that line:
+
+- **Send button** toggles `.is-ready` (glow) when `#ask-input` holds text, and replays a `.spark` sweep on click.
+- **Adaptive background** — `detectTheme()` matches query keywords and swaps a `theme-nature` / `theme-luxury` class on `.hero`, which re-skins the `.deco-weave` pattern (leaf texture / silk sheen) via a brief `weave-shift` dissolve. Keyword→theme maps live in the `THEMES` array.
+- **Live SGT clock** — `#sgt-clock` in the topbar shows current Singapore time via `Intl.DateTimeFormat({ timeZone: 'Asia/Singapore' })` (computed locally, no network), refreshed on a 15s interval. Editorial treatment: a large light-weight `.clock-time` numeral with a dimmed `.cc` colon, over a small tracked `.clock-meta` line (live dot · `SGT` · "24/7 Islandwide Availability"). `tickClock()` writes the `HH<span class="cc">:</span>MM` markup each tick.
 
 ### Backend wiring hooks (placeholders only)
 
