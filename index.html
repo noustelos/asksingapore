@@ -115,7 +115,7 @@
     }
     @media (prefers-reduced-motion: reduce) {
       .mark, .mark .diamond, .display, .send-btn, .availability .dot { animation: none !important; }
-      .acquire, .topbar, .hero-left, .hero-right, .closing, .cta-pill { animation: none !important; }
+      .acquire, .topbar, .hero-left, .hero-right, .closing, .foot, .cta-pill { animation: none !important; }
       .send-btn::after { display: none; }
       .deco-weave { transition: none !important; }
     }
@@ -222,15 +222,16 @@
       box-shadow: 0 0 18px -6px rgba(232,211,160,0.5);
     }
 
-    /* staged entrance order: notice → topbar → title → chat → closing → CTA */
-    .acquire, .topbar, .hero-left, .hero-right, .closing, .cta-pill {
+    /* staged entrance order: notice → topbar → title → chat → closing → footer → CTA */
+    .acquire, .topbar, .hero-left, .hero-right, .closing, .foot, .cta-pill {
       animation: scRise .7s cubic-bezier(.2,.7,.2,1) both;
     }
     .topbar     { animation-delay: .08s; }
     .hero-left  { animation-delay: .18s; }
     .hero-right { animation-delay: .32s; }
     .closing    { animation-delay: .46s; }
-    .cta-pill   { animation-delay: .60s; }
+    .foot       { animation-delay: .56s; }
+    .cta-pill   { animation-delay: .66s; }
 
     /* ---- top bar ---- */
     .topbar {
@@ -520,6 +521,26 @@
       font-size: 18px; color: rgba(243,236,220,0.6);
     }
 
+    /* ---- footer: sister-domain link ---- */
+    .foot {
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      padding: clamp(24px, 4vw, 38px) 0 8px;
+    }
+    .foot .hairline {
+      width: 54px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(198,166,98,0.5), transparent);
+    }
+    .foot-text {
+      margin: 0; font-size: 10.5px; font-weight: 500;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(243,236,220,0.38); text-align: center;
+    }
+    .foot-text a {
+      color: var(--gold); text-decoration: none;
+      transition: color .18s ease, text-shadow .2s ease;
+    }
+    .foot-text a:hover { color: #f0dca8; text-shadow: 0 0 14px rgba(232,211,160,0.45); }
+
     /* ---- floating pill ---- */
     .cta-pill {
       position: absolute;
@@ -569,7 +590,7 @@
 
       <!-- ===================== ACQUISITION NOTICE ===================== -->
       <!-- mailto only — no forms, no network logic (design-only stays intact) -->
-      <a class="acquire" href="mailto:avatar68@gmail.com?subject=Acquisition%20enquiry%20%E2%80%94%20asksingapore.ai">
+      <a class="acquire" href="mailto:info@asksingapore.ai,info@asksantorini.ai?subject=Acquisition%20enquiry%20%E2%80%94%20asksingapore.ai">
         <span class="diamond" aria-hidden="true"></span>
         Premium domain available for acquisition
         <span class="enquire">· Enquire <span class="arrow" aria-hidden="true">→</span></span>
@@ -686,6 +707,12 @@
           </div>
           <p class="tagline">Your AI concierge, made for Singapore, in your pocket — ready any time, any day.</p>
         </div>
+
+        <!-- footer: sister concierge -->
+        <footer class="foot">
+          <span class="hairline" aria-hidden="true"></span>
+          <p class="foot-text">Sister concierge · <a href="https://asksantorini.ai" target="_blank" rel="noopener">asksantorini.ai</a></p>
+        </footer>
 
       </div>
     </div>

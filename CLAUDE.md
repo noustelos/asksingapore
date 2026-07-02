@@ -8,7 +8,7 @@ A **design-only** landing page for asksingapore.ai. Everything lives in a single
 
 There is intentionally **no chat, AI, or network logic**. The backend is wired separately later. Treat this repo as the visual source of truth; do not add fetch/API/state-management code unless explicitly asked.
 
-The commercial goal of the page is to **sell the domain**: the `.acquire` pill above the topbar states availability and links out via `mailto:` (the only outbound contact — keep it a plain mailto, no forms). `<head>` carries the canonical URL, Open Graph/Twitter cards, an inline SVG favicon, and JSON-LD, so shared links preview well for prospective buyers.
+The commercial goal of the page is to **sell the domain**: the `.acquire` pill above the topbar states availability and links out via `mailto:` to the contact addresses `info@asksingapore.ai` and `info@asksantorini.ai` (the only outbound contact — keep it a plain mailto, no forms). The `.foot` footer links to the sister domain [asksantorini.ai](https://asksantorini.ai). `<head>` carries the canonical URL, Open Graph/Twitter cards, an inline SVG favicon, and JSON-LD, so shared links preview well for prospective buyers.
 
 ## Run
 
@@ -23,7 +23,7 @@ python3 -m http.server 8000   # then visit http://localhost:8000
 The page is one `.hero` section with three layers:
 
 1. **Ambient decoration** (`.deco-*`, `aria-hidden`) — stacked absolutely-positioned layers: glow, rings, the faint `.deco-weave` Peranakan quatrefoil lattice, dot grid, and bottom fade. Purely cosmetic.
-2. **`.inner`** — the `.acquire` domain-for-sale pill, the topbar (brand mark + wordmark + availability) and `.main`, which holds the `.hero-row` (the "Just Ask" title on the left, the `.chat` mock window on the right) and the `.closing` block below.
+2. **`.inner`** — the `.acquire` domain-for-sale pill, the topbar (brand mark + wordmark + availability) and `.main`, which holds the `.hero-row` (the "Just Ask" title on the left, the `.chat` mock window on the right), the `.closing` block, and the `.foot` sister-domain footer.
 3. **`.cta-pill`** — the floating "Ask Singapore AI" button.
 
 ### Styling system
