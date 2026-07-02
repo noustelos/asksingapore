@@ -4,7 +4,34 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ASKSINGAPORE.AI — Just Ask</title>
-  <meta name="description" content="Your Singapore AI travel guide. Restaurants, hotels, car rentals and live directions — instant local answers, without the noise." />
+  <meta name="description" content="Your Singapore AI travel guide. Restaurants, hotels, car rentals and live directions — instant local answers, without the noise. Premium domain available for acquisition." />
+
+  <!-- Canonical + social sharing cards (the link preview IS the pitch when
+       the domain is shared with a prospective buyer) -->
+  <link rel="canonical" href="https://asksingapore.ai/" />
+  <meta name="theme-color" content="#08271e" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://asksingapore.ai/" />
+  <meta property="og:site_name" content="ASKSINGAPORE.AI" />
+  <meta property="og:title" content="ASKSINGAPORE.AI — Just Ask" />
+  <meta property="og:description" content="Your Singapore AI travel guide. Instant local answers, without the noise. Premium domain available for acquisition." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="ASKSINGAPORE.AI — Just Ask" />
+  <meta name="twitter:description" content="Your Singapore AI travel guide. Instant local answers, without the noise. Premium domain available for acquisition." />
+
+  <!-- Favicon: the gold diamond brand mark on jade, inline (no asset files) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23f0dca8'/%3E%3Cstop offset='1' stop-color='%23c6a662'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='%2308271e'/%3E%3Crect x='21' y='21' width='22' height='22' rx='3' fill='url(%23g)' transform='rotate(45 32 32)'/%3E%3C/svg%3E" />
+
+  <!-- Structured data: tells search engines the domain itself is on offer -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ASKSINGAPORE.AI",
+    "url": "https://asksingapore.ai/",
+    "description": "Singapore AI concierge — premium domain available for acquisition."
+  }
+  </script>
 
   <!-- Google Fonts: Cormorant Garamond (serif display) + Hanken Grotesk (UI) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -81,11 +108,28 @@
       18%  { opacity: 0.9; }
       100% { transform: translateX(240%) skewX(-18deg); opacity: 0; }
     }
+    /* staged entrance — the page 'settles in' like a curtain rising */
+    @keyframes scRise {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
     @media (prefers-reduced-motion: reduce) {
       .mark, .mark .diamond, .display, .send-btn, .availability .dot { animation: none !important; }
+      .acquire, .topbar, .hero-left, .hero-right, .closing, .foot, .cta-pill { animation: none !important; }
       .send-btn::after { display: none; }
       .deco-weave { transition: none !important; }
     }
+
+    /* keyboard focus — same champagne glow as hover, never the UA default ring */
+    :focus-visible {
+      outline: 2px solid rgba(232,211,160,0.75);
+      outline-offset: 2px;
+    }
+    .input-row:focus-within {
+      border-color: rgba(232,211,160,0.6);
+      box-shadow: 0 0 16px -6px rgba(232,211,160,0.4);
+    }
+    .input-row input:focus-visible { outline: none; } /* the row carries the focus ring */
 
     /* ============================================================
        Hero section
@@ -155,6 +199,39 @@
       display: flex;
       flex-direction: column;
     }
+
+    /* ---- acquisition notice — the page's commercial purpose, stated once,
+       quietly, in the same jewellery language as the rest of the design ---- */
+    .acquire {
+      align-self: center; max-width: 100%;
+      display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center;
+      text-align: center; gap: 10px;
+      margin-bottom: clamp(16px, 2.5vw, 26px);
+      padding: 8px 18px; border-radius: 999px;
+      border: 1px solid rgba(198,166,98,0.35);
+      background: linear-gradient(180deg, rgba(198,166,98,0.10), rgba(198,166,98,0.03));
+      color: var(--gold); text-decoration: none;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase;
+      transition: border-color .18s ease, color .18s ease, box-shadow .2s ease;
+    }
+    .acquire .diamond { width: 7px; height: 7px; border-radius: 1px; flex: 0 0 auto; }
+    .acquire .enquire { white-space: nowrap; } /* keep 'Enquire →' on one line when the pill wraps */
+    .acquire .arrow { color: var(--rose-gold); letter-spacing: 0; }
+    .acquire:hover {
+      border-color: rgba(232,211,160,0.8); color: #f0dca8;
+      box-shadow: 0 0 18px -6px rgba(232,211,160,0.5);
+    }
+
+    /* staged entrance order: notice → topbar → title → chat → closing → footer → CTA */
+    .acquire, .topbar, .hero-left, .hero-right, .closing, .foot, .cta-pill {
+      animation: scRise .7s cubic-bezier(.2,.7,.2,1) both;
+    }
+    .topbar     { animation-delay: .08s; }
+    .hero-left  { animation-delay: .18s; }
+    .hero-right { animation-delay: .32s; }
+    .closing    { animation-delay: .46s; }
+    .foot       { animation-delay: .56s; }
+    .cta-pill   { animation-delay: .66s; }
 
     /* ---- top bar ---- */
     .topbar {
@@ -444,6 +521,26 @@
       font-size: 18px; color: rgba(243,236,220,0.6);
     }
 
+    /* ---- footer: sister-domain link ---- */
+    .foot {
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      padding: clamp(24px, 4vw, 38px) 0 8px;
+    }
+    .foot .hairline {
+      width: 54px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(198,166,98,0.5), transparent);
+    }
+    .foot-text {
+      margin: 0; font-size: 10.5px; font-weight: 500;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(243,236,220,0.38); text-align: center;
+    }
+    .foot-text a {
+      color: var(--gold); text-decoration: none;
+      transition: color .18s ease, text-shadow .2s ease;
+    }
+    .foot-text a:hover { color: #f0dca8; text-shadow: 0 0 14px rgba(232,211,160,0.45); }
+
     /* ---- floating pill ---- */
     .cta-pill {
       position: absolute;
@@ -466,6 +563,8 @@
 
     /* ---- responsive fallback (the design is non-wrapping; stack only when truly narrow) ---- */
     @media (max-width: 760px) {
+      /* the tracked caps line is too wide for narrow screens — relax it */
+      .acquire { letter-spacing: 0.12em; font-size: 10.5px; padding: 7px 14px; }
       .hero-row { flex-wrap: wrap; }
       .hero-left, .hero-right { flex: 1 1 100%; max-width: 100%; }
       .hero-left .effortless { margin-left: auto; margin-right: auto; }
@@ -488,6 +587,14 @@
     <div class="deco deco-fade" aria-hidden="true"></div>
 
     <div class="inner">
+
+      <!-- ===================== ACQUISITION NOTICE ===================== -->
+      <!-- mailto only — no forms, no network logic (design-only stays intact) -->
+      <a class="acquire" href="mailto:info@asksingapore.ai,info@asksantorini.ai?subject=Acquisition%20enquiry%20%E2%80%94%20asksingapore.ai">
+        <span class="diamond" aria-hidden="true"></span>
+        Premium domain available for acquisition
+        <span class="enquire">· Enquire <span class="arrow" aria-hidden="true">→</span></span>
+      </a>
 
       <!-- ===================== TOP BAR ===================== -->
       <header class="topbar">
@@ -601,6 +708,12 @@
           <p class="tagline">Your AI concierge, made for Singapore, in your pocket — ready any time, any day.</p>
         </div>
 
+        <!-- footer: sister concierge -->
+        <footer class="foot">
+          <span class="hairline" aria-hidden="true"></span>
+          <p class="foot-text">Sister concierge · <a href="https://asksantorini.ai" target="_blank" rel="noopener">asksantorini.ai</a></p>
+        </footer>
+
       </div>
     </div>
 
@@ -686,6 +799,11 @@
       input.addEventListener('input', function () {
         refreshSendState();
         applyTheme(detectTheme(input.value));
+      });
+
+      // Enter mirrors the Send click — same spark, still no chat logic.
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && input.value.trim().length > 0) sparkSend();
       });
 
       // Category chips only prefill the input (prefill text from the source design).
