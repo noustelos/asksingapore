@@ -8,7 +8,7 @@ A **design-only** landing page for asksingapore.ai. Everything lives in a single
 
 There is intentionally **no chat, AI, or network logic**. The backend is wired separately later. Treat this repo as the visual source of truth; do not add fetch/API/state-management code unless explicitly asked.
 
-The commercial goal of the page is to **sell the domain**: the `.acquire` pill above the topbar states availability and links out via `mailto:` to the contact addresses `info@asksingapore.ai` and `info@asksantorini.ai` (the only outbound contact — keep it a plain mailto, no forms). The `.foot` footer links to the sister domain [asksantorini.ai](https://asksantorini.ai). `<head>` carries the canonical URL, Open Graph/Twitter cards, an inline SVG favicon, and JSON-LD, so shared links preview well for prospective buyers.
+The commercial goal of the page is to **sell the domain**: the `.acquire` pill above the topbar states availability and links out via `mailto:` to `info@asksantorini.ai` (the only outbound contact — keep it a plain mailto, no forms; switch to `info@asksingapore.ai` once that mailbox is set up). The `.foot` footer links to the sister domain [asksantorini.ai](https://asksantorini.ai). `<head>` carries the canonical URL, Open Graph/Twitter cards, an inline SVG favicon, and JSON-LD, so shared links preview well for prospective buyers.
 
 ## Run
 
