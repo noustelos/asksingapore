@@ -912,9 +912,11 @@
         scrollLog(true);
       }
       // word-by-word reveal — the 'AI is writing' feel, kept cheap:
-      // one span per word, opacity-only transition
+      // one span per word, opacity-only transition. The streaming itself
+      // plays under reduced motion too — it's content presentation, not a
+      // motion trigger; the CSS guard swaps the fade for an instant pop
+      // and we tighten the pace a touch.
       function revealAnswer(bubble, text, done) {
-        if (reduceMotion) { bubble.textContent = text; scrollLog(false); done(); return; }
         var words = text.split(' ');
         var i = 0;
         var timer = window.setInterval(function () {
@@ -925,12 +927,23 @@
           span.classList.add('in');
           log.scrollTop = log.scrollHeight; // keep the tail in view
           if (++i >= words.length) { window.clearInterval(timer); done(); }
-        }, 45);
+        }, reduceMotion ? 30 : 45);
       }
       function respond(text) {
         busy = true;
         var row = botRow();
         var bubble = row.querySelector('.bubble');
+        var finish = function () {
+          revealAnswer(bubble, answerFor(text), function () { busy = false; });
+        };
+        if (reduceMotion) {
+          // motion triggers stay off: no dots pulse, no smooth scroll —
+          // straight into the streaming reveal
+          log.appendChild(row);
+          scrollLog(false);
+          finish();
+          return;
+        }
         bubble.className = 'bubble typing';
         bubble.innerHTML = '<span class="tdot"></span><span class="tdot"></span><span class="tdot"></span>';
         log.appendChild(row);
@@ -938,8 +951,8 @@
         window.setTimeout(function () {
           bubble.className = 'bubble';
           bubble.innerHTML = '';
-          revealAnswer(bubble, answerFor(text), function () { busy = false; });
-        }, reduceMotion ? 0 : 800);
+          finish();
+        }, 800);
       }
       function submitQuery() {
         var text = input.value.trim();
