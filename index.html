@@ -524,10 +524,13 @@
       display: inline-flex; align-items: center; gap: 9px;
       font-size: 12.5px; font-weight: 600;
       letter-spacing: 0.24em; text-transform: uppercase;
-      color: var(--ink-55);
+      color: var(--ink-55); text-decoration: none;
+      transition: color .18s ease;
     }
     .studio-mark .diamond { width: 6px; height: 6px; border-radius: 1px; flex: 0 0 auto; }
-    .studio-mark .studio { color: var(--jade); }
+    .studio-mark .studio { color: var(--jade); transition: color .18s ease; }
+    .studio-mark:hover { color: var(--ink); }
+    .studio-mark:hover .studio { color: var(--jade-deep); }
 
     /* ---- floating pill ---- */
     .cta-pill {
@@ -766,10 +769,10 @@
     </div>
 
     <!-- studio attribution, bottom-left over the grove -->
-    <div class="studio-mark">
+    <a class="studio-mark" href="https://noustelos.gr" target="_blank" rel="noopener">
       <span class="diamond" aria-hidden="true"></span>
       Noustelos <span class="studio">Studio</span>
-    </div>
+    </a>
 
     <!-- ===================== FLOATING PILL ===================== -->
     <!-- TODO: wire to backend stub — opens the concierge experience later -->
