@@ -9,7 +9,7 @@
   <!-- Canonical + social sharing cards (the link preview IS the pitch when
        the domain is shared with a prospective buyer) -->
   <link rel="canonical" href="https://asksingapore.ai/" />
-  <meta name="theme-color" content="#08271e" />
+  <meta name="theme-color" content="#FBFAF7" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://asksingapore.ai/" />
   <meta property="og:site_name" content="ASKSINGAPORE.AI" />
@@ -19,8 +19,8 @@
   <meta name="twitter:title" content="ASKSINGAPORE.AI — Just Ask" />
   <meta name="twitter:description" content="Your Singapore AI travel guide. Instant local answers, without the noise. Premium domain available for acquisition." />
 
-  <!-- Favicon: the gold diamond brand mark on jade, inline (no asset files) -->
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23f0dca8'/%3E%3Cstop offset='1' stop-color='%23c6a662'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='%2308271e'/%3E%3Crect x='21' y='21' width='22' height='22' rx='3' fill='url(%23g)' transform='rotate(45 32 32)'/%3E%3C/svg%3E" />
+  <!-- Favicon: the paper diamond brand mark on jade, inline (no asset files) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232E7D5B'/%3E%3Crect x='21' y='21' width='22' height='22' rx='3' fill='%23FBFAF7' transform='rotate(45 32 32)'/%3E%3C/svg%3E" />
 
   <!-- Structured data: tells search engines the domain itself is on offer -->
   <script type="application/ld+json">
@@ -33,74 +33,72 @@
   }
   </script>
 
-  <!-- Google Fonts: Cormorant Garamond (serif display) + Hanken Grotesk (UI) -->
+  <!-- Google Fonts: Fraunces (soft serif display) + Hanken Grotesk (UI) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Hanken+Grotesk:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Hanken+Grotesk:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
     /* ============================================================
-       Design tokens — deep emerald + gold concierge palette
-       (values taken verbatim from the source-of-truth design)
+       Design tokens — 'Garden City Precision'
+       warm paper, botanical green ink, vermilion strictly reserved
+       for the two conversion points (Send + acquisition pill)
        ============================================================ */
     :root {
-      /* Warm Champagne Cream body text (Jade + Champagne pairing) */
-      --ink: #f4ecda;
-      --gold: #c6a662;
-      /* Rosé Gold accent — Marina Bay modern sophistication */
-      --rose-gold: #e3b9a6;
+      --paper: #FBFAF7;      /* warm-cool off-white base */
+      --ink: #16241E;        /* deep botanical green-black — body text */
+      --jade: #2E7D5B;       /* primary botanical green */
+      --jade-deep: #1F5C42;  /* tonal stop for hovers / gradients */
+      --vermilion: #D62828;  /* Singapore red — CTAs ONLY */
+      --mist: #E8EDE9;       /* soft green-grey — surfaces / dividers */
 
-      /* 'Jade Orchid' background: forest green deepening into a
-         jewel-toned jade, with a faint orchid-gold glow up top */
+      /* derived tints — same families, alpha only */
+      --ink-70: rgba(22,36,30,0.72);
+      --ink-55: rgba(22,36,30,0.56);
+      --ink-40: rgba(22,36,30,0.42);
+      --ink-line: rgba(22,36,30,0.14);
+      --jade-line: rgba(46,125,91,0.32);
+      --jade-tint: rgba(46,125,91,0.10);
+
+      /* paper field with two faint jade washes drifting in from the corners */
       --hero-bg:
-        radial-gradient(150% 130% at 80% 14%, rgba(198,166,98,0.13), transparent 46%),
-        radial-gradient(120% 120% at 10% -8%, #1a5546, transparent 56%),
-        radial-gradient(140% 120% at 92% 96%, rgba(13,74,56,0.55), transparent 60%),
-        linear-gradient(158deg, #0b332a 0%, #08271e 40%, #051c15 74%, #04140f 100%);
+        radial-gradient(110% 80% at 86% -12%, rgba(46,125,91,0.09), transparent 58%),
+        radial-gradient(90% 70% at -8% 104%, rgba(46,125,91,0.07), transparent 55%),
+        linear-gradient(180deg, #FBFAF7 0%, #F7F8F3 100%);
 
-      --diamond-grad: linear-gradient(135deg, #f0dca8, #c6a662);
-      --wordmark-grad: linear-gradient(180deg, #f0dca8, #c6a662);
-      --title-grad: linear-gradient(176deg, #f7ead0 4%, #e8cf9a 28%, #d8bd86 52%, #b1924f 100%);
-      /* Send button + line-work carry a subtle rosé gold tint */
-      --send-grad: linear-gradient(160deg, #f6e7cf, #e0b69d 50%, #c8995f);
-      --send-grad-hover: linear-gradient(160deg, #fbefda, #ecc4ab 50%, #d4a767);
+      --diamond-grad: linear-gradient(135deg, #43A47A, #1F5C42);
+      --wordmark-grad: linear-gradient(180deg, #2A5240, #16241E);
+      /* the two vermilion moments */
+      --send-grad: linear-gradient(160deg, #E4403A, #C7202A);
+      --send-grad-hover: linear-gradient(160deg, #EB4F44, #D62828);
 
-      --font-display: "Cormorant Garamond", Georgia, serif;
+      --font-display: "Fraunces", Georgia, serif;
       --font-ui: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
     }
 
     * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; }
-    ::selection { background: rgba(198,166,98,0.30); }
-    input::placeholder { color: rgba(243,236,220,0.42); }
+    html, body { margin: 0; padding: 0; background: var(--paper); }
+    ::selection { background: rgba(46,125,91,0.20); }
+    input::placeholder { color: rgba(22,36,30,0.38); }
 
     @keyframes scLivePulse {
-      0%   { box-shadow: 0 0 0 0 rgba(95,207,142,0.55); }
-      70%  { box-shadow: 0 0 0 7px rgba(95,207,142,0); }
-      100% { box-shadow: 0 0 0 0 rgba(95,207,142,0); }
-    }
-    @keyframes scGlowDrift {
-      0%, 100% { transform: translate3d(0,0,0) scale(1); opacity: 0.85; }
-      50%      { transform: translate3d(0,-14px,0) scale(1.04); opacity: 1; }
+      0%   { box-shadow: 0 0 0 0 rgba(46,125,91,0.45); }
+      70%  { box-shadow: 0 0 0 7px rgba(46,125,91,0); }
+      100% { box-shadow: 0 0 0 0 rgba(46,125,91,0); }
     }
     /* 'Living' logo — gentle breathing shimmer on the brand mark */
     @keyframes scMarkShimmer {
-      0%, 100% { box-shadow: inset 0 0 12px rgba(198,166,98,0.18), 0 0 0 0 rgba(232,211,160,0); }
-      50%      { box-shadow: inset 0 0 16px rgba(232,211,160,0.40), 0 0 14px 1px rgba(198,166,98,0.30); }
+      0%, 100% { box-shadow: inset 0 0 10px rgba(46,125,91,0.14), 0 0 0 0 rgba(46,125,91,0); }
+      50%      { box-shadow: inset 0 0 14px rgba(46,125,91,0.28), 0 0 12px 1px rgba(46,125,91,0.18); }
     }
     @keyframes scDiamondPulse {
       0%, 100% { transform: rotate(45deg) scale(1);    filter: brightness(1); }
-      50%      { transform: rotate(45deg) scale(1.12); filter: brightness(1.25); }
-    }
-    /* 'Just Ask' — metallic sheen sweeping across the engraved gold */
-    @keyframes scTitleSheen {
-      0%   { background-position: 0% 50%; }
-      100% { background-position: 200% 50%; }
+      50%      { transform: rotate(45deg) scale(1.12); filter: brightness(1.15); }
     }
     /* Send button comes alive when the input holds text */
     @keyframes scSendGlow {
-      0%, 100% { box-shadow: 0 6px 18px -6px rgba(227,185,166,0.55), 0 0 0 0 rgba(232,211,160,0); }
-      50%      { box-shadow: 0 6px 22px -5px rgba(227,185,166,0.8), 0 0 18px 1px rgba(232,211,160,0.5); }
+      0%, 100% { box-shadow: 0 8px 18px -8px rgba(214,40,40,0.55), 0 0 0 0 rgba(214,40,40,0); }
+      50%      { box-shadow: 0 8px 22px -6px rgba(214,40,40,0.65), 0 0 16px 0 rgba(214,40,40,0.28); }
     }
     /* a tiny spark sweeps across on click */
     @keyframes scSendSpark {
@@ -114,20 +112,20 @@
       to   { opacity: 1; transform: translateY(0); }
     }
     @media (prefers-reduced-motion: reduce) {
-      .mark, .mark .diamond, .display, .send-btn, .availability .dot { animation: none !important; }
+      .mark, .mark .diamond, .send-btn, .availability .dot, .chat-status .live, .clock-meta .dot { animation: none !important; }
       .acquire, .topbar, .hero-left, .hero-right, .closing, .foot, .cta-pill { animation: none !important; }
       .send-btn::after { display: none; }
       .deco-weave { transition: none !important; }
     }
 
-    /* keyboard focus — same champagne glow as hover, never the UA default ring */
+    /* keyboard focus — clear jade ring, never the UA default */
     :focus-visible {
-      outline: 2px solid rgba(232,211,160,0.75);
+      outline: 2px solid var(--jade);
       outline-offset: 2px;
     }
     .input-row:focus-within {
-      border-color: rgba(232,211,160,0.6);
-      box-shadow: 0 0 16px -6px rgba(232,211,160,0.4);
+      border-color: var(--jade);
+      box-shadow: 0 0 0 3px rgba(46,125,91,0.16);
     }
     .input-row input:focus-visible { outline: none; } /* the row carries the focus ring */
 
@@ -147,48 +145,37 @@
 
     /* ambient decoration */
     .deco { position: absolute; pointer-events: none; }
-    .deco-glow {
-      right: -6%; top: 18%; width: 540px; height: 540px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(198,166,98,0.16), transparent 62%);
-      filter: blur(8px);
-      animation: scGlowDrift 11s ease-in-out infinite;
+    /* 'Supertree Grove' — the one signature element: thin jade line-art,
+       Gardens-by-the-Bay canopy architecture rising from the bottom left.
+       Static (no animation) so it stays light on older machines. */
+    .deco-grove {
+      left: -34px; bottom: -6px;
+      width: min(48vw, 620px);
+      color: var(--jade);
+      opacity: 0.85;
     }
-    .deco-ring-1 { right: -160px; top: 64px; width: 560px; height: 560px; border-radius: 50%; border: 1px solid rgba(198,166,98,0.10); }
-    .deco-ring-2 { right: -90px; top: 148px; width: 392px; height: 392px; border-radius: 50%; border: 1px solid rgba(198,166,98,0.07); }
-    .deco-grid {
-      inset: 0;
-      background-image: radial-gradient(rgba(198,166,98,0.05) 1px, transparent 1px);
-      background-size: 30px 30px;
-      opacity: 0.5;
-    }
-    /* 'Peranakan Weave' — faint quatrefoil/orchid-petal lattice,
-       only visible upon close inspection */
+    .deco-grove svg { display: block; width: 100%; height: auto; }
+    /* Adaptive theme layer: transparent by default (the grove is the
+       signature); a query can dissolve a faint pattern in. */
     .deco-weave {
       inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23e8d3a0' stroke-width='1'%3E%3Ccircle cx='0' cy='0' r='24'/%3E%3Ccircle cx='48' cy='0' r='24'/%3E%3Ccircle cx='0' cy='48' r='24'/%3E%3Ccircle cx='48' cy='48' r='24'/%3E%3Ccircle cx='24' cy='24' r='24'/%3E%3C/g%3E%3C/svg%3E");
-      background-size: 48px 48px;
-      opacity: 0.04;
-      mix-blend-mode: screen;
-      /* enables the gentle dissolve when the query shifts the theme */
+      opacity: 0;
       transition: opacity .55s ease;
     }
-    /* Adaptive theme: the environment responds to the query.
-       'nature' (running routes, botanic gardens) → tree-leaf texture. */
+    /* 'nature' (running routes, botanic gardens) → tree-leaf texture. */
     .hero.theme-nature .deco-weave {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='52' viewBox='0 0 40 52'%3E%3Cg fill='none' stroke='%23bfe3c2' stroke-width='1'%3E%3Cpath d='M20 4 C32 14 32 34 20 48 C8 34 8 14 20 4 Z'/%3E%3Cpath d='M20 8 L20 44'/%3E%3Cpath d='M20 18 L11 14 M20 18 L29 14 M20 28 L11 24 M20 28 L29 24 M20 38 L13 35 M20 38 L27 35'/%3E%3C/g%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='52' viewBox='0 0 40 52'%3E%3Cg fill='none' stroke='%232E7D5B' stroke-width='1'%3E%3Cpath d='M20 4 C32 14 32 34 20 48 C8 34 8 14 20 4 Z'/%3E%3Cpath d='M20 8 L20 44'/%3E%3Cpath d='M20 18 L11 14 M20 18 L29 14 M20 28 L11 24 M20 28 L29 24 M20 38 L13 35 M20 38 L27 35'/%3E%3C/g%3E%3C/svg%3E");
       background-size: 40px 52px;
-      opacity: 0.06;
+      opacity: 0.05;
     }
-    /* 'luxury' (luxury shopping, Orchard) → fine silk-sheen weave. */
+    /* 'luxury' (luxury shopping, Orchard) → fine woven pinstripe. */
     .hero.theme-luxury .deco-weave {
-      background-image: repeating-linear-gradient(45deg, rgba(232,211,160,0.6) 0 1px, transparent 1px 8px),
-                        repeating-linear-gradient(-45deg, rgba(227,185,166,0.4) 0 1px, transparent 1px 8px);
-      background-size: auto;
+      background-image: repeating-linear-gradient(45deg, rgba(46,125,91,0.45) 0 1px, transparent 1px 9px),
+                        repeating-linear-gradient(-45deg, rgba(22,36,30,0.30) 0 1px, transparent 1px 9px);
       opacity: 0.05;
     }
     /* mid-dissolve: weave fades out before the pattern swaps in */
     .hero.weave-shift .deco-weave { opacity: 0 !important; }
-    .deco-fade { left: 0; right: 0; bottom: 0; height: 200px; background: linear-gradient(180deg, transparent, rgba(3,15,11,0.55)); }
 
     .inner {
       position: relative;
@@ -200,27 +187,28 @@
       flex-direction: column;
     }
 
-    /* ---- acquisition notice — the page's commercial purpose, stated once,
-       quietly, in the same jewellery language as the rest of the design ---- */
+    /* ---- acquisition notice — the page's commercial purpose. One of the
+       two vermilion moments: quiet outline at rest, fills on hover ---- */
     .acquire {
       align-self: center; max-width: 100%;
       display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center;
       text-align: center; gap: 10px;
       margin-bottom: clamp(16px, 2.5vw, 26px);
       padding: 8px 18px; border-radius: 999px;
-      border: 1px solid rgba(198,166,98,0.35);
-      background: linear-gradient(180deg, rgba(198,166,98,0.10), rgba(198,166,98,0.03));
-      color: var(--gold); text-decoration: none;
-      font-size: 11px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase;
-      transition: border-color .18s ease, color .18s ease, box-shadow .2s ease;
+      border: 1px solid rgba(214,40,40,0.42);
+      background: #fff;
+      color: var(--vermilion); text-decoration: none;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
+      transition: border-color .18s ease, color .18s ease, background .18s ease, box-shadow .2s ease;
     }
-    .acquire .diamond { width: 7px; height: 7px; border-radius: 1px; flex: 0 0 auto; }
+    .acquire .diamond { width: 7px; height: 7px; border-radius: 1px; background: var(--vermilion); flex: 0 0 auto; }
     .acquire .enquire { white-space: nowrap; } /* keep 'Enquire →' on one line when the pill wraps */
-    .acquire .arrow { color: var(--rose-gold); letter-spacing: 0; }
+    .acquire .arrow { color: inherit; letter-spacing: 0; }
     .acquire:hover {
-      border-color: rgba(232,211,160,0.8); color: #f0dca8;
-      box-shadow: 0 0 18px -6px rgba(232,211,160,0.5);
+      background: var(--vermilion); border-color: var(--vermilion); color: #fff;
+      box-shadow: 0 12px 26px -14px rgba(214,40,40,0.65);
     }
+    .acquire:hover .diamond { background: #fff; }
 
     /* staged entrance order: notice → topbar → title → chat → closing → footer → CTA */
     .acquire, .topbar, .hero-left, .hero-right, .closing, .foot, .cta-pill {
@@ -241,9 +229,9 @@
     .brand { display: flex; align-items: center; gap: 13px; }
     .mark {
       width: 34px; height: 34px; border-radius: 50%;
-      border: 1px solid rgba(232,211,160,0.6);
+      border: 1px solid var(--jade-line);
       display: flex; align-items: center; justify-content: center;
-      box-shadow: inset 0 0 12px rgba(198,166,98,0.18);
+      box-shadow: inset 0 0 10px rgba(46,125,91,0.14);
       animation: scMarkShimmer 4.5s ease-in-out infinite;
     }
     .diamond {
@@ -256,55 +244,55 @@
     }
     .wordmark {
       font-family: var(--font-display); font-weight: 600;
-      font-size: 20px; letter-spacing: 0.34em; padding-left: 0.34em;
+      font-size: 20px; letter-spacing: 0.3em; padding-left: 0.3em;
     }
     .wordmark .name {
       background: var(--wordmark-grad);
       -webkit-background-clip: text; background-clip: text; color: transparent;
     }
-    .wordmark .tld { color: rgba(243,236,220,0.72); }
+    .wordmark .tld { color: var(--jade); }
     /* ---- live Singapore clock: editorial / wallpaper-magazine treatment ---- */
     .availability { display: flex; align-items: center; }
     .clock { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; line-height: 1; }
     .clock-date {
-      /* same light grotesque as the time, in SGT gold — ties the lockup together */
-      font-family: var(--font-ui); font-weight: 200;
-      font-size: 15px; letter-spacing: 0.2em; text-transform: uppercase;
+      /* light grotesque in jade — ties the lockup to the botanical accent */
+      font-family: var(--font-ui); font-weight: 500;
+      font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase;
       font-variant-numeric: tabular-nums;
-      color: var(--gold);
+      color: var(--jade);
     }
     .clock-time {
       /* airy, light grotesque numerals — reads like a luxury timepiece */
-      font-family: var(--font-ui); font-weight: 200;
+      font-family: var(--font-ui); font-weight: 300;
       font-size: 34px; letter-spacing: 0.04em;
       font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1;
       color: var(--ink);
     }
     .clock-time .cc { /* dimmed colon, watch-style */
-      color: rgba(243,236,220,0.34); font-weight: 200; margin: 0 0.04em;
+      color: rgba(22,36,30,0.30); font-weight: 300; margin: 0 0.04em;
     }
     .clock-meta {
       display: flex; align-items: center; gap: 8px;
-      font-size: 9.5px; font-weight: 500; letter-spacing: 0.26em; text-transform: uppercase;
-      color: rgba(243,236,220,0.42);
+      font-size: 9.5px; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase;
+      color: var(--ink-40);
     }
     .clock-meta .dot {
-      width: 5px; height: 5px; border-radius: 50%; background: #5fcf8e;
+      width: 5px; height: 5px; border-radius: 50%; background: var(--jade);
       animation: scLivePulse 2.4s ease-out infinite;
     }
-    .clock-meta .sgt-tz { color: var(--gold); }
+    .clock-meta .sgt-tz { color: var(--jade); }
     .clock-meta .hair { /* thin rule between zone and availability */
-      width: 14px; height: 1px; background: rgba(198,166,98,0.45);
+      width: 14px; height: 1px; background: rgba(46,125,91,0.45);
     }
     /* local weather line — mockup placeholder, wired to live data later */
     .clock-weather {
       display: flex; align-items: center; gap: 8px; margin-top: 1px;
-      font-family: var(--font-ui); font-size: 9.5px; font-weight: 500;
+      font-family: var(--font-ui); font-size: 9.5px; font-weight: 600;
       letter-spacing: 0.26em; text-transform: uppercase;
-      color: rgba(243,236,220,0.34);
+      color: var(--ink-40);
     }
-    .clock-weather .temp { color: rgba(243,236,220,0.62); letter-spacing: 0.12em; }
-    .clock-weather .sep { width: 3px; height: 3px; border-radius: 50%; background: rgba(198,166,98,0.4); }
+    .clock-weather .temp { color: var(--ink-55); letter-spacing: 0.12em; }
+    .clock-weather .sep { width: 3px; height: 3px; border-radius: 50%; background: rgba(46,125,91,0.45); }
 
     /* ---- main ---- */
     .main {
@@ -324,116 +312,102 @@
     /* left column */
     .hero-left { flex: 1 1 0; min-width: 0; max-width: 560px; }
     .eyebrow {
-      font-size: 12px; letter-spacing: 0.4em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 22px; padding-left: 0.4em;
+      font-size: 12px; font-weight: 600; letter-spacing: 0.4em; text-transform: uppercase;
+      color: var(--jade); margin-bottom: 22px; padding-left: 0.4em;
     }
     .display {
       margin: 0;
-      font-family: var(--font-display); font-weight: 600;
-      line-height: 0.86; letter-spacing: 0.005em;
-      font-size: clamp(88px, 14vw, 182px);
-      /* engraved-jewelry effect: gradient + a brighter sheen band that
-         slowly sweeps across the letterforms */
-      background:
-        linear-gradient(105deg, transparent 30%, rgba(255,250,235,0.85) 47%, rgba(255,255,255,0.95) 50%, rgba(255,250,235,0.85) 53%, transparent 70%),
-        var(--title-grad);
-      background-size: 200% 100%, 100% 100%;
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-      /* depth via drop-shadow (follows the glyph fill, so thin curves
-         like the J's tail stay solid — no grey text-shadow fringe) */
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.30));
-      animation: scTitleSheen 7s linear infinite;
+      font-family: var(--font-display); font-weight: 540;
+      line-height: 0.9; letter-spacing: -0.015em;
+      font-size: clamp(84px, 13.5vw, 176px);
+      color: var(--ink);
     }
+    /* the editorial flourish: 'Ask' turns italic jade — one warm gesture */
+    .display em { font-style: italic; color: var(--jade); }
 
-    /* effortless glass card — the USP subtitle directly under the title.
+    /* effortless card — the USP subtitle directly under the title.
        Width hugs the copy (fit-content) so the panel never looks oversized
        relative to its text. */
     .effortless {
       width: fit-content; max-width: 100%;
       padding: 16px 22px; border-radius: 15px;
-      border: 1px solid rgba(198,166,98,0.24);
-      background: linear-gradient(150deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
-      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      border: 1px solid var(--mist);
+      background: #fff;
+      box-shadow: 0 20px 44px -30px rgba(22,36,30,0.30), 0 2px 8px -5px rgba(22,36,30,0.10);
       text-align: left;
     }
     /* direct subtitle: ties the action (Just Ask) to the ease (No app…) */
-    .hero-left .effortless { margin-top: 20px; }
+    .hero-left .effortless { margin-top: 24px; }
     .effortless .label-row { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
-    .effortless .pip { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
-    .effortless .label { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+    .effortless .pip { width: 5px; height: 5px; border-radius: 50%; background: var(--jade); }
+    .effortless .label { font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--jade); }
     .effortless .sub { font-size: 17px; font-weight: 500; color: var(--ink); }
 
     /* ---- chat window (right) ---- */
     .hero-right { flex: 0 1 414px; min-width: 270px; width: 100%; max-width: 421px; }
     .chat-frame {
       position: relative; border-radius: 28px; padding: 1px;
-      background: linear-gradient(155deg, rgba(232,211,160,0.7), rgba(198,166,98,0.16) 38%, rgba(232,211,160,0.42));
-      /* elevation: soft, low-opacity dark-jade shadow with wide blur lifts
-         the card so it 'floats' just above the background */
+      background: linear-gradient(155deg, rgba(46,125,91,0.38), rgba(46,125,91,0.10) 40%, rgba(46,125,91,0.26));
+      /* elevation: soft ink shadow with wide blur lifts the card so it
+         'floats' just above the paper */
       box-shadow:
-        0 48px 100px -34px rgba(2,12,9,0.85),
-        0 18px 46px -28px rgba(6,28,22,0.65),
-        0 2px 0 rgba(255,255,255,0.04) inset;
+        0 44px 90px -46px rgba(22,36,30,0.42),
+        0 18px 44px -30px rgba(22,36,30,0.22);
     }
     .chat {
       border-radius: 27px; padding: 24px 24px 22px;
-      background: linear-gradient(165deg, rgba(16,55,45,0.92), rgba(9,36,29,0.95));
-      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      background: #ffffff;
       overflow: hidden;
-      /* inner champagne glow: the edges 'catch the light' like glass/brushed metal */
-      box-shadow:
-        inset 0 1px 0 rgba(243,236,220,0.22),
-        inset 0 0 30px rgba(232,211,160,0.11);
     }
 
     .chat-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
     .chat-status { display: flex; align-items: center; gap: 10px; }
     .chat-status .live {
-      width: 8px; height: 8px; border-radius: 50%; background: #5fcf8e;
+      width: 8px; height: 8px; border-radius: 50%; background: var(--jade);
       animation: scLivePulse 2.4s ease-out infinite;
     }
     .chat-status .label {
       font-size: 11.5px; letter-spacing: 0.2em; text-transform: uppercase;
-      color: rgba(243,236,220,0.82); font-weight: 500;
+      color: var(--ink-70); font-weight: 600;
     }
     .chat-actions { display: flex; align-items: center; gap: 8px; }
     .icon-btn {
       width: 30px; height: 30px; border-radius: 50%;
-      border: 1px solid rgba(198,166,98,0.32); background: transparent;
-      color: rgba(243,236,220,0.7); font-size: 15px; line-height: 1; cursor: pointer;
+      border: 1px solid var(--ink-line); background: transparent;
+      color: var(--ink-55); font-size: 15px; line-height: 1; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: border-color .18s ease, color .18s ease;
     }
-    .icon-btn:hover { border-color: rgba(232,211,160,0.7); color: var(--ink); }
+    .icon-btn:hover { border-color: var(--jade); color: var(--ink); }
     .icon-btn .diamond { width: 8px; height: 8px; border-radius: 1px; }
 
     .chat-intro { margin-top: 20px; }
     .chat-title {
-      font-family: var(--font-display); font-size: 24px; font-weight: 600;
-      line-height: 1.18; color: var(--ink);
+      font-family: var(--font-display); font-size: 24px; font-weight: 560;
+      line-height: 1.2; color: var(--ink);
     }
-    .bullets { margin-top: 16px; display: flex; flex-direction: column; gap: 9px; font-size: 14px; color: rgba(243,236,220,0.66); }
+    .bullets { margin-top: 16px; display: flex; flex-direction: column; gap: 9px; font-size: 14px; color: var(--ink-55); }
     .bullet { display: flex; align-items: center; gap: 11px; }
     .bullet .ico {
       width: 22px; height: 22px; flex: 0 0 auto; border-radius: 50%;
-      border: 1px solid rgba(198,166,98,0.34);
+      border: 1px solid rgba(46,125,91,0.35);
       display: flex; align-items: center; justify-content: center;
     }
-    .bullet .ico .pip { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
+    .bullet .ico .pip { width: 5px; height: 5px; border-radius: 50%; background: var(--jade); }
 
-    .divider { height: 1px; margin: 20px 0; background: linear-gradient(90deg, transparent, rgba(198,166,98,0.32), transparent); }
+    .divider { height: 1px; margin: 20px 0; background: linear-gradient(90deg, transparent, rgba(46,125,91,0.30), transparent); }
 
     .bubble-row { display: flex; gap: 11px; align-items: flex-start; }
     .bubble-av {
       width: 28px; height: 28px; flex: 0 0 auto; border-radius: 50%;
-      border: 1px solid rgba(232,211,160,0.55);
+      border: 1px solid var(--jade-line);
       display: flex; align-items: center; justify-content: center;
-      box-shadow: inset 0 0 10px rgba(198,166,98,0.2);
+      box-shadow: inset 0 0 8px rgba(46,125,91,0.12);
     }
     .bubble-av .diamond { width: 9px; height: 9px; border-radius: 2px; }
     .bubble {
-      background: linear-gradient(150deg, rgba(255,255,255,0.07), rgba(255,255,255,0.025));
-      border: 1px solid rgba(198,166,98,0.2);
+      background: var(--mist);
+      border: 1px solid rgba(22,36,30,0.05);
       border-radius: 4px 16px 16px 16px; padding: 13px 16px;
       font-size: 14.5px; line-height: 1.5; color: var(--ink);
     }
@@ -445,47 +419,47 @@
     .chip {
       cursor: pointer;
       flex: 1 1 auto; text-align: center; white-space: nowrap;
-      border: 1px solid rgba(198,166,98,0.34);
-      background: linear-gradient(180deg, rgba(198,166,98,0.10), rgba(198,166,98,0.04));
-      color: rgba(243,236,220,0.86);
-      font-family: var(--font-ui); font-size: 12px; letter-spacing: 0.01em;
+      border: 1px solid var(--ink-line);
+      background: #fff;
+      color: var(--ink-70);
+      font-family: var(--font-ui); font-size: 12px; font-weight: 500; letter-spacing: 0.01em;
       padding: 8px 10px; border-radius: 999px;
       /* raised, physically pressable */
-      box-shadow: 0 2px 6px -2px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.07);
+      box-shadow: 0 2px 5px -2px rgba(22,36,30,0.20), inset 0 1px 0 #fff;
       transition: transform .16s ease, box-shadow .16s ease,
                   background .18s ease, border-color .18s ease, color .18s ease;
     }
     .chip:hover {
-      border-color: rgba(232,211,160,0.8);
-      background: linear-gradient(180deg, rgba(198,166,98,0.22), rgba(198,166,98,0.10));
-      color: #fff;
+      border-color: var(--jade);
+      background: var(--jade-tint);
+      color: var(--jade-deep);
       transform: translateY(-2px);
-      box-shadow: 0 9px 20px -7px rgba(0,0,0,0.6),
-                  0 0 16px -5px rgba(232,211,160,0.45),
-                  inset 0 1px 0 rgba(255,255,255,0.14);
+      box-shadow: 0 10px 20px -10px rgba(22,36,30,0.30);
     }
     .chip:active {
       transform: translateY(0);
-      box-shadow: inset 0 2px 6px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04);
+      box-shadow: inset 0 2px 5px rgba(22,36,30,0.16);
     }
-    .caption { margin-top: 11px; font-size: 11px; letter-spacing: 0.04em; color: rgba(243,236,220,0.4); }
+    .caption { margin-top: 11px; font-size: 11px; letter-spacing: 0.04em; color: var(--ink-40); }
 
     .input-row {
       margin-top: 18px; display: flex; align-items: center; gap: 8px;
       padding: 7px 7px 7px 18px; border-radius: 999px;
-      border: 1px solid rgba(227,185,166,0.34); background: rgba(4,18,14,0.5);
+      border: 1px solid var(--ink-line); background: #fff;
+      transition: border-color .18s ease, box-shadow .2s ease;
     }
     .input-row input {
       flex: 1; min-width: 0; background: transparent; border: none; outline: none;
       color: var(--ink); font-family: var(--font-ui); font-size: 14.5px;
     }
+    /* the other vermilion moment: Send */
     .send-btn {
       position: relative; overflow: hidden;
       flex: 0 0 auto; cursor: pointer; border: none;
       padding: 11px 22px; border-radius: 999px;
       font-family: var(--font-ui); font-weight: 600; font-size: 13.5px; letter-spacing: 0.02em;
-      color: #06231b; background: var(--send-grad);
-      box-shadow: 0 6px 18px -6px rgba(227,185,166,0.55);
+      color: #fff; background: var(--send-grad);
+      box-shadow: 0 8px 18px -8px rgba(214,40,40,0.55);
       transition: background .18s ease, transform .1s ease, box-shadow .2s ease;
     }
     .send-btn:hover { background: var(--send-grad-hover); }
@@ -496,29 +470,29 @@
     /* spark sweep, toggled by JS on click */
     .send-btn::after {
       content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 45%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.75), transparent);
       transform: translateX(-130%) skewX(-18deg); opacity: 0; pointer-events: none;
     }
     .send-btn.spark::after { animation: scSendSpark .6s ease-out; }
     .disclaimer {
       margin: 22px 2px 0; font-size: 11px; line-height: 1.5;
-      letter-spacing: 0.02em; color: rgba(243,236,220,0.30);
+      letter-spacing: 0.02em; color: var(--ink-40);
     }
-    .disclaimer .live-data { color: rgba(232,211,160,0.55); font-weight: 500; }
+    .disclaimer .live-data { color: var(--jade); font-weight: 600; }
 
     /* ---- below: subhead, panel, tagline ---- */
     .closing { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; }
     .closing .guide {
       margin: 0; font-family: var(--font-display); font-style: italic; font-weight: 500;
-      font-size: clamp(21px, 2.6vw, 30px); color: rgba(243,236,220,0.86);
+      font-size: clamp(21px, 2.6vw, 30px); color: var(--ink);
     }
     .closing .lede {
       margin: 14px auto 0; max-width: 520px; font-size: 15.5px; line-height: 1.65;
-      color: rgba(243,236,220,0.6);
+      color: var(--ink-55);
     }
     .closing .tagline {
       margin: 0; max-width: 560px; font-family: var(--font-display); font-style: italic;
-      font-size: 18px; color: rgba(243,236,220,0.6);
+      font-size: 18px; color: var(--ink-55);
     }
 
     /* ---- footer: sister-domain link ---- */
@@ -528,18 +502,18 @@
     }
     .foot .hairline {
       width: 54px; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(198,166,98,0.5), transparent);
+      background: linear-gradient(90deg, transparent, rgba(46,125,91,0.5), transparent);
     }
     .foot-text {
-      margin: 0; font-size: 10.5px; font-weight: 500;
+      margin: 0; font-size: 10.5px; font-weight: 600;
       letter-spacing: 0.22em; text-transform: uppercase;
-      color: rgba(243,236,220,0.38); text-align: center;
+      color: var(--ink-40); text-align: center;
     }
     .foot-text a {
-      color: var(--gold); text-decoration: none;
-      transition: color .18s ease, text-shadow .2s ease;
+      color: var(--jade); text-decoration: none;
+      transition: color .18s ease;
     }
-    .foot-text a:hover { color: #f0dca8; text-shadow: 0 0 14px rgba(232,211,160,0.45); }
+    .foot-text a:hover { color: var(--jade-deep); text-decoration: underline; text-underline-offset: 3px; }
 
     /* ---- floating pill ---- */
     .cta-pill {
@@ -547,15 +521,19 @@
       right: clamp(20px, 4vw, 46px); bottom: clamp(20px, 4vw, 40px); z-index: 3;
       display: inline-flex; align-items: center; gap: 10px;
       padding: 11px 20px 11px 14px; border-radius: 999px;
-      border: 1px solid rgba(198,166,98,0.4);
-      background: linear-gradient(150deg, rgba(16,55,45,0.85), rgba(9,36,29,0.9));
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 18px 40px -16px rgba(0,0,0,0.7);
+      border: 1px solid var(--ink-line);
+      background: #fff;
+      box-shadow: 0 18px 40px -20px rgba(22,36,30,0.35);
       color: var(--ink); font: inherit; cursor: pointer;
+      transition: transform .16s ease, border-color .18s ease, box-shadow .2s ease;
+    }
+    .cta-pill:hover {
+      transform: translateY(-2px); border-color: var(--jade-line);
+      box-shadow: 0 24px 48px -22px rgba(22,36,30,0.40);
     }
     .cta-pill .ring {
       width: 26px; height: 26px; border-radius: 50%;
-      border: 1px solid rgba(232,211,160,0.6);
+      border: 1px solid var(--jade-line);
       display: flex; align-items: center; justify-content: center;
     }
     .cta-pill .ring .diamond { width: 9px; height: 9px; border-radius: 2px; }
@@ -563,14 +541,17 @@
 
     /* ---- responsive fallback (the design is non-wrapping; stack only when truly narrow) ---- */
     @media (max-width: 760px) {
-      /* the tracked caps line is too wide for narrow screens — relax it */
+      /* the tracked caps lines are too wide for narrow screens — relax them */
       .acquire { letter-spacing: 0.12em; font-size: 10.5px; padding: 7px 14px; }
+      .wordmark { font-size: 16px; letter-spacing: 0.16em; padding-left: 0.16em; }
       .hero-row { flex-wrap: wrap; }
       .hero-left, .hero-right { flex: 1 1 100%; max-width: 100%; }
       .hero-left .effortless { margin-left: auto; margin-right: auto; }
       /* chips wrap to a 2×2 grid when the chat is full-width */
       .chips { flex-wrap: wrap; }
       .chip { flex: 1 1 calc(50% - 4px); }
+      /* the grove recedes so stacked text stays quiet over it */
+      .deco-grove { width: 80vw; opacity: 0.45; }
     }
   </style>
 </head>
@@ -579,12 +560,60 @@
   <section class="hero" data-screen-label="Hero">
 
     <!-- ambient decoration -->
-    <div class="deco deco-glow" aria-hidden="true"></div>
-    <div class="deco deco-ring-1" aria-hidden="true"></div>
-    <div class="deco deco-ring-2" aria-hidden="true"></div>
+    <!-- signature: 'Supertree Grove' jade line-art (static SVG, no assets) -->
+    <div class="deco deco-grove" aria-hidden="true">
+      <svg viewBox="0 0 640 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+          <!-- tall supertree -->
+          <g stroke-opacity="0.26">
+            <path d="M172 520 C175 400 178 265 181 155"/>
+            <path d="M198 520 C194 400 190 265 187 155"/>
+            <path d="M173 486 C185 466 196 450 196 428"/>
+            <path d="M197 486 C185 466 174 450 174 428"/>
+            <path d="M174 428 C186 408 196 392 196 370"/>
+            <path d="M196 428 C184 408 174 392 174 370"/>
+            <path d="M175 370 C187 350 196 334 195 312"/>
+            <path d="M195 370 C183 350 175 334 176 312"/>
+          </g>
+          <g stroke-opacity="0.32">
+            <path d="M184 152 C122 128 64 96 30 42"/>
+            <path d="M184 152 C142 116 114 78 102 34"/>
+            <path d="M184 152 C169 112 163 72 163 32"/>
+            <path d="M184 152 C246 128 304 96 338 42"/>
+            <path d="M184 152 C226 116 254 78 266 34"/>
+            <path d="M184 152 C199 112 205 72 205 32"/>
+          </g>
+          <path d="M30 42 C110 8 258 8 338 42" stroke-opacity="0.14"/>
+          <ellipse cx="184" cy="118" rx="84" ry="9" stroke-opacity="0.13"/>
+          <!-- medium supertree -->
+          <g stroke-opacity="0.24">
+            <path d="M446 520 C448 445 450 350 451 272"/>
+            <path d="M466 520 C463 445 459 350 457 272"/>
+            <path d="M447 480 C456 464 465 452 464 434"/>
+            <path d="M465 480 C456 464 447 452 448 434"/>
+            <path d="M448 434 C457 418 465 406 464 388"/>
+            <path d="M464 434 C455 418 448 406 448 388"/>
+          </g>
+          <g stroke-opacity="0.28">
+            <path d="M454 268 C406 246 366 222 340 184"/>
+            <path d="M454 268 C430 238 418 210 412 182"/>
+            <path d="M454 268 C449 236 447 208 447 180"/>
+            <path d="M454 268 C502 246 542 222 568 184"/>
+            <path d="M454 268 C478 238 490 210 496 182"/>
+            <path d="M454 268 C459 236 461 208 461 180"/>
+          </g>
+          <path d="M340 184 C398 150 510 150 568 184" stroke-opacity="0.12"/>
+          <ellipse cx="454" cy="244" rx="60" ry="7" stroke-opacity="0.11"/>
+        </g>
+        <g fill="currentColor" fill-opacity="0.45">
+          <circle cx="30" cy="42" r="2.4"/><circle cx="102" cy="34" r="2.4"/><circle cx="163" cy="32" r="2.4"/>
+          <circle cx="205" cy="32" r="2.4"/><circle cx="266" cy="34" r="2.4"/><circle cx="338" cy="42" r="2.4"/>
+          <circle cx="340" cy="184" r="2.2"/><circle cx="412" cy="182" r="2.2"/><circle cx="447" cy="180" r="2.2"/>
+          <circle cx="461" cy="180" r="2.2"/><circle cx="496" cy="182" r="2.2"/><circle cx="568" cy="184" r="2.2"/>
+        </g>
+      </svg>
+    </div>
     <div class="deco deco-weave" aria-hidden="true"></div>
-    <div class="deco deco-grid" aria-hidden="true"></div>
-    <div class="deco deco-fade" aria-hidden="true"></div>
 
     <div class="inner">
 
@@ -632,7 +661,7 @@
           <!-- LEFT -->
           <div class="hero-left">
             <div class="eyebrow">Singapore · AI Concierge</div>
-            <h1 class="display">Just<br />Ask</h1>
+            <h1 class="display">Just<br /><em>Ask</em></h1>
             <div class="effortless">
               <div class="label-row"><span class="pip"></span><span class="label">Effortless</span></div>
               <div class="sub">No app. No sign-up. Just answers.</div>
