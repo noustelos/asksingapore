@@ -111,11 +111,18 @@
       from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+    /* scripted demo: typing dots while the bot 'thinks' */
+    @keyframes scTypingDot {
+      0%, 60%, 100% { opacity: 0.25; transform: translateY(0); }
+      30%           { opacity: 1;    transform: translateY(-3px); }
+    }
     @media (prefers-reduced-motion: reduce) {
       .mark, .mark .diamond, .send-btn, .availability .dot, .chat-status .live, .clock-meta .dot { animation: none !important; }
       .acquire, .topbar, .hero-left, .hero-right, .closing, .foot, .cta-pill, .studio-mark { animation: none !important; }
       .send-btn::after { display: none; }
       .deco-weave { transition: none !important; }
+      .bubble.typing .tdot { animation: none !important; }
+      .bubble .w { transition: none !important; opacity: 1 !important; }
     }
 
     /* keyboard focus — clear jade ring, never the UA default */
@@ -412,6 +419,36 @@
       border-radius: 4px 16px 16px 16px; padding: 13px 16px;
       font-size: 14.5px; line-height: 1.5; color: var(--ink);
     }
+
+    /* conversation log — the scripted demo appends bubbles here.
+       Nested scroll keeps the card (and page layout) stable as the
+       exchange grows. */
+    .chat-log {
+      display: flex; flex-direction: column; gap: 12px;
+      max-height: 300px; overflow-y: auto;
+      overscroll-behavior: contain;
+      padding-right: 4px;
+      scrollbar-width: thin; scrollbar-color: rgba(46,125,91,0.30) transparent;
+    }
+    .chat-log::-webkit-scrollbar { width: 5px; }
+    .chat-log::-webkit-scrollbar-thumb { background: rgba(46,125,91,0.25); border-radius: 999px; }
+    .bubble-row.user { justify-content: flex-end; }
+    .bubble-row.user .bubble {
+      background: #E2E9E4; /* one step deeper into the mist family */
+      border-radius: 16px 4px 16px 16px;
+      max-width: 85%;
+    }
+    /* typing indicator — three jade dots breathing */
+    .bubble.typing { display: inline-flex; align-items: center; gap: 5px; padding: 15px 16px; }
+    .bubble.typing .tdot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--jade);
+      animation: scTypingDot 1s ease-in-out infinite;
+    }
+    .bubble.typing .tdot:nth-child(2) { animation-delay: .15s; }
+    .bubble.typing .tdot:nth-child(3) { animation-delay: .3s; }
+    /* word-by-word reveal — plain opacity transition, cheap on old machines */
+    .bubble .w { opacity: 0; transition: opacity .18s ease; }
+    .bubble .w.in { opacity: 1; }
 
     .categories { margin-top: 18px; }
     /* one tidy row, evenly distributed like a segmented control;
@@ -718,10 +755,13 @@
 
                 <div class="divider"></div>
 
-                <!-- bot bubble -->
-                <div class="bubble-row">
-                  <span class="bubble-av" aria-hidden="true"><span class="diamond"></span></span>
-                  <div class="bubble">Hi! I'm your local Singapore AI. Ask me anything.</div>
+                <!-- conversation log: the scripted demo appends bubbles here;
+                     the greeting is the first bot message -->
+                <div class="chat-log" id="chat-log">
+                  <div class="bubble-row">
+                    <span class="bubble-av" aria-hidden="true"><span class="diamond"></span></span>
+                    <div class="bubble">Hi! I'm your local Singapore AI. Ask me anything.</div>
+                  </div>
                 </div>
 
                 <!-- category chips -->
@@ -785,9 +825,10 @@
 
   <script>
     // ============================================================
-    // DESIGN-ONLY behaviour.
-    // No chat / AI / network logic here — the backend is connected
-    // separately later. The hooks below are intentionally minimal.
+    // SCRIPTED DEMO behaviour — all client-side, ZERO network.
+    // Four hardcoded Q→A pairs preview the concierge concept; any
+    // other input gets the fallback line. The real backend later
+    // replaces the SCRIPTED map + respond() — the hooks stay put.
     // ============================================================
     (function () {
       var input = document.getElementById('ask-input');
@@ -829,6 +870,87 @@
         if (e.animationName === 'scSendSpark') send.classList.remove('spark');
       });
 
+      // --- Scripted concierge: hardcoded Q→A map (no AI, no network) ---
+      var log = document.getElementById('chat-log');
+      var SCRIPTED = [
+        { q: "Where should I eat tonight near Marina Bay?",
+          a: "For dinner near Marina Bay, it depends on the mood. For something special with a view, Lavo at Marina Bay Sands does Italian over the skyline. If you'd rather be among locals, the hawker stalls at Lau Pa Sat fire up satay street after 7pm — smoky, cheap, unforgettable. And for a quiet, refined evening, Saint Pierre serves modern French by the water. Want me to narrow it by cuisine or budget?" },
+        { q: "Find me a boutique hotel in Tiong Bahru.",
+          a: "Tiong Bahru is a lovely choice — Singapore's artsy heritage quarter, all Art Deco walk-ups and indie cafés. The Nostalgia Hotel captures the neighbourhood's vintage charm, while a stay near Yong Siak Street puts you steps from the famous bakery and bookshop. Calmer than Orchard, but still ten minutes to the centre. Shall I check availability for your dates?" },
+        { q: "Rent a car for a day trip tomorrow.",
+          a: "For a day trip, a rental gives you the most freedom — though Singapore's compact, so factor in entry permits if you're crossing into Malaysia. Companies like Hertz and local outfits near the CBD offer daily rates, and most day-trippers head up to Johor Bahru or out to the East Coast. Where were you thinking of driving?" },
+        { q: "Directions to Gardens by the Bay.",
+          a: "Gardens by the Bay is easiest by MRT — take the Downtown Line to Bayfront station, then a signposted five-minute walk. Coming from Marina Bay Sands? You can stroll across the Dragonfly Bridge in about ten minutes. Driving? There's paid parking on-site. Want the route from where you are now?" }
+      ];
+      var FALLBACK = "That's exactly the kind of question the full AskSingapore would answer live. This is a preview — try one of the suggestions above to see it in action, or reach out if you'd like the complete concierge for your own project.";
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var busy = false; // one exchange at a time
+
+      function normalize(s) { return s.trim().replace(/\s+/g, ' ').toLowerCase(); }
+      function answerFor(text) {
+        var q = normalize(text);
+        for (var i = 0; i < SCRIPTED.length; i++) if (normalize(SCRIPTED[i].q) === q) return SCRIPTED[i].a;
+        return FALLBACK;
+      }
+      function scrollLog(smooth) {
+        log.scrollTo({ top: log.scrollHeight, behavior: (smooth && !reduceMotion) ? 'smooth' : 'auto' });
+      }
+      function botRow() {
+        var row = document.createElement('div'); row.className = 'bubble-row';
+        var av = document.createElement('span'); av.className = 'bubble-av'; av.setAttribute('aria-hidden', 'true');
+        av.appendChild(Object.assign(document.createElement('span'), { className: 'diamond' }));
+        row.appendChild(av);
+        row.appendChild(Object.assign(document.createElement('div'), { className: 'bubble' }));
+        return row;
+      }
+      function addUserBubble(text) {
+        var row = document.createElement('div'); row.className = 'bubble-row user';
+        var bubble = document.createElement('div'); bubble.className = 'bubble';
+        bubble.textContent = text;
+        row.appendChild(bubble);
+        log.appendChild(row);
+        scrollLog(true);
+      }
+      // word-by-word reveal — the 'AI is writing' feel, kept cheap:
+      // one span per word, opacity-only transition
+      function revealAnswer(bubble, text, done) {
+        if (reduceMotion) { bubble.textContent = text; scrollLog(false); done(); return; }
+        var words = text.split(' ');
+        var i = 0;
+        var timer = window.setInterval(function () {
+          var span = document.createElement('span'); span.className = 'w';
+          span.textContent = (i ? ' ' : '') + words[i];
+          bubble.appendChild(span);
+          void span.offsetWidth; // flush so the fade-in transition runs
+          span.classList.add('in');
+          log.scrollTop = log.scrollHeight; // keep the tail in view
+          if (++i >= words.length) { window.clearInterval(timer); done(); }
+        }, 45);
+      }
+      function respond(text) {
+        busy = true;
+        var row = botRow();
+        var bubble = row.querySelector('.bubble');
+        bubble.className = 'bubble typing';
+        bubble.innerHTML = '<span class="tdot"></span><span class="tdot"></span><span class="tdot"></span>';
+        log.appendChild(row);
+        scrollLog(true);
+        window.setTimeout(function () {
+          bubble.className = 'bubble';
+          bubble.innerHTML = '';
+          revealAnswer(bubble, answerFor(text), function () { busy = false; });
+        }, reduceMotion ? 0 : 800);
+      }
+      function submitQuery() {
+        var text = input.value.trim();
+        if (!text || busy) return;
+        sparkSend();
+        addUserBubble(text);
+        input.value = '';
+        refreshSendState();
+        respond(text);
+      }
+
       // --- Adaptive background: shift the weave to match the query ---
       // Visual response only (no AI/network). Keywords map to a theme.
       var THEMES = [
@@ -858,25 +980,29 @@
         applyTheme(detectTheme(input.value));
       });
 
-      // Enter mirrors the Send click — same spark, still no chat logic.
+      // Enter mirrors the Send click — same scripted flow.
       input.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' && input.value.trim().length > 0) sparkSend();
+        if (e.key === 'Enter' && input.value.trim().length > 0) submitQuery();
       });
 
-      // Category chips only prefill the input (prefill text from the source design).
+      // Category chips prefill, then auto-send after a beat — the question
+      // is briefly seen entering the input before it flies. (No auto-send
+      // while a reply is playing; the prefill just waits in the field.)
       document.querySelectorAll('.chip').forEach(function (chip) {
         chip.addEventListener('click', function () {
           input.value = chip.getAttribute('data-prefill') || chip.textContent.trim();
           input.focus();
           refreshSendState();
           applyTheme(detectTheme(input.value));
+          if (!busy) window.setTimeout(submitQuery, 300);
         });
       });
 
-      // Send button — placeholder hook only.
-      // TODO: wire to backend stub (submit input.value to the concierge).
+      // Send — scripted reply for the demo questions, fallback otherwise.
+      // TODO: the real backend replaces respond() (submit to the concierge).
       send.addEventListener('click', function () {
-        sparkSend(); // physical, "powerful" feedback — no chat logic yet.
+        if (input.value.trim().length > 0) submitQuery();
+        else sparkSend(); // empty input: physical feedback only
       });
 
       // Floating CTA — placeholder hook only.
