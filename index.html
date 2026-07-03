@@ -33,10 +33,10 @@
   }
   </script>
 
-  <!-- Google Fonts: Fraunces (soft serif display) + Hanken Grotesk (UI) -->
+  <!-- Google Fonts: Newsreader (warm editorial serif) + Hanken Grotesk (UI) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Hanken+Grotesk:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Hanken+Grotesk:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
     /* ============================================================
@@ -72,7 +72,7 @@
       --send-grad: linear-gradient(160deg, #E4403A, #C7202A);
       --send-grad-hover: linear-gradient(160deg, #EB4F44, #D62828);
 
-      --font-display: "Fraunces", Georgia, serif;
+      --font-display: "Newsreader", Georgia, serif;
       --font-ui: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
     }
 
@@ -113,7 +113,7 @@
     }
     @media (prefers-reduced-motion: reduce) {
       .mark, .mark .diamond, .send-btn, .availability .dot, .chat-status .live, .clock-meta .dot { animation: none !important; }
-      .acquire, .topbar, .hero-left, .hero-right, .closing, .foot, .cta-pill { animation: none !important; }
+      .acquire, .topbar, .hero-left, .hero-right, .closing, .foot, .cta-pill, .studio-mark { animation: none !important; }
       .send-btn::after { display: none; }
       .deco-weave { transition: none !important; }
     }
@@ -211,9 +211,10 @@
     .acquire:hover .diamond { background: #fff; }
 
     /* staged entrance order: notice → topbar → title → chat → closing → footer → CTA */
-    .acquire, .topbar, .hero-left, .hero-right, .closing, .foot, .cta-pill {
+    .acquire, .topbar, .hero-left, .hero-right, .closing, .foot, .cta-pill, .studio-mark {
       animation: scRise .7s cubic-bezier(.2,.7,.2,1) both;
     }
+    .studio-mark { animation-delay: .66s; }
     .topbar     { animation-delay: .08s; }
     .hero-left  { animation-delay: .18s; }
     .hero-right { animation-delay: .32s; }
@@ -317,8 +318,8 @@
     }
     .display {
       margin: 0;
-      font-family: var(--font-display); font-weight: 540;
-      line-height: 0.9; letter-spacing: -0.015em;
+      font-family: var(--font-display); font-weight: 500;
+      line-height: 0.9; letter-spacing: -0.01em;
       font-size: clamp(84px, 13.5vw, 176px);
       color: var(--ink);
     }
@@ -505,15 +506,28 @@
       background: linear-gradient(90deg, transparent, rgba(46,125,91,0.5), transparent);
     }
     .foot-text {
-      margin: 0; font-size: 10.5px; font-weight: 600;
-      letter-spacing: 0.22em; text-transform: uppercase;
-      color: var(--ink-40); text-align: center;
+      margin: 0; font-size: 13px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ink-55); text-align: center;
     }
     .foot-text a {
       color: var(--jade); text-decoration: none;
       transition: color .18s ease;
     }
     .foot-text a:hover { color: var(--jade-deep); text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ---- studio attribution — anchors the grove corner; part of the
+       brand network story (Noustelos → asksantorini.ai → here) ---- */
+    .studio-mark {
+      position: absolute;
+      left: clamp(20px, 4vw, 46px); bottom: clamp(20px, 4vw, 40px); z-index: 3;
+      display: inline-flex; align-items: center; gap: 9px;
+      font-size: 12.5px; font-weight: 600;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--ink-55);
+    }
+    .studio-mark .diamond { width: 6px; height: 6px; border-radius: 1px; flex: 0 0 auto; }
+    .studio-mark .studio { color: var(--jade); }
 
     /* ---- floating pill ---- */
     .cta-pill {
@@ -552,6 +566,10 @@
       .chip { flex: 1 1 calc(50% - 4px); }
       /* the grove recedes so stacked text stays quiet over it */
       .deco-grove { width: 80vw; opacity: 0.45; }
+      /* attribution joins the flow under the footer instead of floating
+         over it on narrow screens */
+      /* bottom margin keeps it clear of the floating CTA pill's zone */
+      .studio-mark { position: static; display: flex; width: fit-content; margin: 6px auto 58px; }
     }
   </style>
 </head>
@@ -745,6 +763,12 @@
         </footer>
 
       </div>
+    </div>
+
+    <!-- studio attribution, bottom-left over the grove -->
+    <div class="studio-mark">
+      <span class="diamond" aria-hidden="true"></span>
+      Noustelos <span class="studio">Studio</span>
     </div>
 
     <!-- ===================== FLOATING PILL ===================== -->
