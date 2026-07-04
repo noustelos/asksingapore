@@ -478,7 +478,12 @@
       transform: translateY(0);
       box-shadow: inset 0 2px 5px rgba(22,36,30,0.16);
     }
-    .caption { margin-top: 11px; font-size: 11px; letter-spacing: 0.04em; color: var(--ink-40); }
+    .caption { margin-top: 11px; font-size: 11px; letter-spacing: 0.04em; color: var(--ink-40); font-weight: 700; }
+    .caption a {
+      color: var(--jade); font-weight: 700; text-decoration: none;
+      transition: color .18s ease;
+    }
+    .caption a:hover { color: var(--jade-deep); text-decoration: underline; text-underline-offset: 3px; }
 
     .input-row {
       margin-top: 18px; display: flex; align-items: center; gap: 8px;
@@ -512,15 +517,6 @@
       transform: translateX(-130%) skewX(-18deg); opacity: 0; pointer-events: none;
     }
     .send-btn.spark::after { animation: scSendSpark .6s ease-out; }
-    .disclaimer {
-      margin: 22px 2px 0; font-size: 11px; line-height: 1.5;
-      letter-spacing: 0.02em; color: var(--ink-40); font-weight: 600;
-    }
-    .disclaimer a {
-      color: var(--jade); font-weight: 600; text-decoration: none;
-      transition: color .18s ease;
-    }
-    .disclaimer a:hover { color: var(--jade-deep); text-decoration: underline; text-underline-offset: 3px; }
 
     /* ---- below: subhead, panel, tagline ---- */
     .closing { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; }
@@ -739,7 +735,7 @@
                 <div class="chat-header">
                   <div class="chat-status">
                     <span class="live" aria-hidden="true"></span>
-                    <span class="label">Live now · Ask Singapore AI</span>
+                    <span class="label">Live Demo · Ask Singapore AI</span>
                   </div>
                   <div class="chat-actions">
                     <button class="icon-btn" aria-label="Refresh conversation">⟳</button>
@@ -776,7 +772,7 @@
                     <button class="chip" data-prefill="Rent a car for a day trip tomorrow.">Car rental</button>
                     <button class="chip" data-prefill="Directions to Gardens by the Bay.">Directions</button>
                   </div>
-                  <div class="caption">Live local data · Directions open in Google Maps</div>
+                  <div class="caption">This chat is a demo with scripted answers — see our live AI concierge at <a href="https://asksantorini.ai" target="_blank" rel="noopener noreferrer">AskSantorini.ai</a>.</div>
                 </div>
 
                 <!-- input -->
@@ -785,8 +781,6 @@
                   <input id="ask-input" type="text" placeholder="Where to eat tonight?" autocomplete="off" />
                   <button id="ask-send" class="send-btn">Send</button>
                 </div>
-
-                <p class="disclaimer">This chat is a demo with scripted answers — see our live AI concierge at <a href="https://asksantorini.ai" target="_blank" rel="noopener noreferrer">AskSantorini.ai</a>.</p>
 
               </div>
             </div>

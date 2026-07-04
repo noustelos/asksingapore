@@ -8,6 +8,8 @@ A **design-only** landing page for asksingapore.ai. Everything lives in a single
 
 There is intentionally **no AI or network logic**. The chat is a **SCRIPTED DEMO** (ΦΑΣΗ 2, shipped): four hardcoded Q→A pairs matching the chip prefills play a typing-dots + word-by-word reveal; any other input gets a fallback line. All client-side — the real backend later replaces the `SCRIPTED` map + `respond()` in the inline script (the hooks stay put). Treat this repo as the visual source of truth; do not add fetch/API/state-management code unless explicitly asked.
 
+**Honesty rule: the demo must not fake live-AI signals.** The bold `.caption` under the category chips discloses the scripted demo and links to the live concierge at [asksantorini.ai](https://asksantorini.ai) (the only disclosure line — there is no separate `.disclaimer` anymore), and the chat-window status label reads "Live Demo · Ask Singapore AI". Keep both honest until the real backend lands.
+
 The commercial goal of the page is to **sell the domain**: the `.acquire` pill above the topbar states availability and links out via `mailto:` to `info@asksantorini.ai` (the only outbound contact — keep it a plain mailto, no forms; switch to `info@asksingapore.ai` once that mailbox is set up). The `.foot` footer links to the sister domain [asksantorini.ai](https://asksantorini.ai), and the bottom-left `.studio-mark` links to [noustelos.gr](https://noustelos.gr) — both signal the brand network. `<head>` carries the canonical URL, Open Graph/Twitter cards, an inline SVG favicon, and JSON-LD, so shared links preview well for prospective buyers.
 
 ## Deploy
