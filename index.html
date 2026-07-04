@@ -514,9 +514,13 @@
     .send-btn.spark::after { animation: scSendSpark .6s ease-out; }
     .disclaimer {
       margin: 22px 2px 0; font-size: 11px; line-height: 1.5;
-      letter-spacing: 0.02em; color: var(--ink-40);
+      letter-spacing: 0.02em; color: var(--ink-40); font-weight: 600;
     }
-    .disclaimer .live-data { color: var(--jade); font-weight: 600; }
+    .disclaimer a {
+      color: var(--jade); font-weight: 600; text-decoration: none;
+      transition: color .18s ease;
+    }
+    .disclaimer a:hover { color: var(--jade-deep); text-decoration: underline; text-underline-offset: 3px; }
 
     /* ---- below: subhead, panel, tagline ---- */
     .closing { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; }
@@ -782,7 +786,7 @@
                   <button id="ask-send" class="send-btn">Send</button>
                 </div>
 
-                <p class="disclaimer"><span class="live-data">Live Local Data</span> · Verification recommended for event schedules and dynamic pricing.</p>
+                <p class="disclaimer">This chat is a demo with scripted answers — see our live AI concierge at <a href="https://asksantorini.ai" target="_blank" rel="noopener noreferrer">AskSantorini.ai</a>.</p>
 
               </div>
             </div>
