@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<!-- Source for og-image.png (1200×630). The card sits in a 20px paper margin so the
+     screenshot can be center-cropped past headless Chrome's rounded window corners:
+
+     chrome --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=2 \
+       --window-size=1240,670 --virtual-time-budget=10000 --screenshot=og-big.png og-card.html
+     sips -c 1260 2400 og-big.png --out og-crop.png && sips -z 630 1200 og-crop.png --out og-image.png
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Hanken+Grotesk:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #FBFAF7;
+    --ink: #16241E;
+    --ink-55: rgba(22, 36, 30, 0.56);
+    --jade: #2E7D5B;
+    --jade-deep: #1F5C42;
+    --jade-line: rgba(46, 125, 91, 0.32);
+    --vermilion: #D62828;
+    --diamond-grad: linear-gradient(135deg, #43A47A, #1F5C42);
+    --wordmark-grad: linear-gradient(180deg, #2A5240, #16241E);
+    --font-display: "Newsreader", Georgia, serif;
+    --font-ui: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1240px; height: 670px; overflow: hidden; background: var(--paper); }
+  .card {
+    position: relative;
+    width: 1200px; height: 630px;
+    margin: 20px;
+    overflow: hidden;
+    background: var(--paper);
+    font-family: var(--font-ui);
+    color: var(--ink);
+  }
+
+  /* Supertree Grove line-art, bottom-right, same artwork as the page */
+  .deco-grove {
+    position: absolute; right: -50px; bottom: -40px;
+    width: 600px; color: var(--jade);
+  }
+  .deco-grove svg { display: block; width: 100%; height: auto; }
+
+  .inner {
+    position: relative; z-index: 1;
+    height: 100%;
+    padding: 64px 80px 56px;
+    display: flex; flex-direction: column;
+  }
+
+  .brand { display: flex; align-items: center; gap: 18px; }
+  .mark {
+    width: 56px; height: 56px; border-radius: 50%;
+    border: 1.5px solid var(--jade-line);
+    box-shadow: inset 0 0 16px rgba(46, 125, 91, 0.16);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mark .diamond {
+    width: 18px; height: 18px; border-radius: 3px;
+    background: var(--diamond-grad);
+    transform: rotate(45deg);
+  }
+  .wordmark {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: 27px; letter-spacing: 0.26em; padding-left: 0.26em;
+  }
+  .wordmark .name {
+    background: var(--wordmark-grad);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .wordmark .tld { color: var(--jade); }
+
+  .display {
+    margin-top: 54px;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 144px; line-height: 0.94;
+    letter-spacing: -0.01em;
+  }
+  .display .accent { color: var(--jade); }
+
+  .tagline {
+    margin-top: 30px;
+    font-size: 28px; font-weight: 300;
+    color: var(--ink-55);
+    letter-spacing: 0.01em;
+  }
+
+  .acquire {
+    margin-top: auto;
+    display: inline-flex; align-items: center; gap: 14px;
+    align-self: flex-start;
+    padding: 15px 28px;
+    border: 1px solid rgba(214, 40, 40, 0.38);
+    border-radius: 999px;
+    background: rgba(214, 40, 40, 0.06);
+    color: var(--vermilion);
+    font-size: 20px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .acquire .diamond {
+    width: 10px; height: 10px; border-radius: 2px;
+    background: var(--vermilion);
+    transform: rotate(45deg);
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="deco-grove">
+    <svg viewBox="0 0 640 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+        <!-- tall supertree -->
+        <g stroke-opacity="0.26">
+          <path d="M172 520 C175 400 178 265 181 155"/>
+          <path d="M198 520 C194 400 190 265 187 155"/>
+          <path d="M173 486 C185 466 196 450 196 428"/>
+          <path d="M197 486 C185 466 174 450 174 428"/>
+          <path d="M174 428 C186 408 196 392 196 370"/>
+          <path d="M196 428 C184 408 174 392 174 370"/>
+          <path d="M175 370 C187 350 196 334 195 312"/>
+          <path d="M195 370 C183 350 175 334 176 312"/>
+        </g>
+        <g stroke-opacity="0.32">
+          <path d="M184 152 C122 128 64 96 30 42"/>
+          <path d="M184 152 C142 116 114 78 102 34"/>
+          <path d="M184 152 C169 112 163 72 163 32"/>
+          <path d="M184 152 C246 128 304 96 338 42"/>
+          <path d="M184 152 C226 116 254 78 266 34"/>
+          <path d="M184 152 C199 112 205 72 205 32"/>
+        </g>
+        <path d="M30 42 C110 8 258 8 338 42" stroke-opacity="0.14"/>
+        <ellipse cx="184" cy="118" rx="84" ry="9" stroke-opacity="0.13"/>
+        <!-- medium supertree -->
+        <g stroke-opacity="0.24">
+          <path d="M446 520 C448 445 450 350 451 272"/>
+          <path d="M466 520 C463 445 459 350 457 272"/>
+          <path d="M447 480 C456 464 465 452 464 434"/>
+          <path d="M465 480 C456 464 447 452 448 434"/>
+          <path d="M448 434 C457 418 465 406 464 388"/>
+          <path d="M464 434 C455 418 448 406 448 388"/>
+        </g>
+        <g stroke-opacity="0.28">
+          <path d="M454 268 C406 246 366 222 340 184"/>
+          <path d="M454 268 C430 238 418 210 412 182"/>
+          <path d="M454 268 C449 236 447 208 447 180"/>
+          <path d="M454 268 C502 246 542 222 568 184"/>
+          <path d="M454 268 C478 238 490 210 496 182"/>
+          <path d="M454 268 C459 236 461 208 461 180"/>
+        </g>
+        <path d="M340 184 C398 150 510 150 568 184" stroke-opacity="0.12"/>
+        <ellipse cx="454" cy="244" rx="60" ry="7" stroke-opacity="0.11"/>
+      </g>
+      <g fill="currentColor" fill-opacity="0.45">
+        <circle cx="30" cy="42" r="2.4"/><circle cx="102" cy="34" r="2.4"/><circle cx="163" cy="32" r="2.4"/>
+        <circle cx="205" cy="32" r="2.4"/><circle cx="266" cy="34" r="2.4"/><circle cx="338" cy="42" r="2.4"/>
+        <circle cx="340" cy="184" r="2.2"/><circle cx="412" cy="182" r="2.2"/><circle cx="447" cy="180" r="2.2"/>
+        <circle cx="461" cy="180" r="2.2"/><circle cx="496" cy="182" r="2.2"/><circle cx="568" cy="184" r="2.2"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="inner">
+    <div class="brand">
+      <span class="mark"><span class="diamond"></span></span>
+      <div class="wordmark"><span class="name">ASKSINGAPORE</span><span class="tld">.AI</span></div>
+    </div>
+
+    <h1 class="display">Just<br /><span class="accent">Ask</span></h1>
+
+    <p class="tagline">Your Singapore AI travel guide — instant local answers, without the noise.</p>
+
+    <div class="acquire">
+      <span class="diamond"></span>
+      Premium domain available for acquisition
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
