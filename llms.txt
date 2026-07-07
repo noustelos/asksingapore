@@ -14,6 +14,7 @@ This is a single-page, design-only site. The on-page chat is a scripted demo, no
 - [asksydney.ai](https://asksydney.ai): AI concierge for Sydney
 - [askaustralia.ai](https://askaustralia.ai): AI concierge for Australia
 - [asknewyork.ai](https://asknewyork.ai): AI concierge for New York
+- [askmykonos.ai](https://askmykonos.ai): AI concierge for Mykonos, Greece
 
 ## Studio
 
