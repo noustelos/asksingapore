@@ -123,7 +123,7 @@
     }
     @media (prefers-reduced-motion: reduce) {
       .mark, .mark .diamond, .send-btn, .availability .dot, .chat-status .live, .clock-meta .dot { animation: none !important; }
-      .acquire, .topbar, .hero-left, .hero-right, .closing, .revenue, .foot, .cta-pill, .studio-mark { animation: none !important; }
+      .acquire, .acquire-slogan, .topbar, .hero-left, .hero-right, .closing, .revenue, .foot, .cta-pill, .studio-mark { animation: none !important; }
       .send-btn::after { display: none; }
       .deco-weave { transition: none !important; }
       .bubble.typing .tdot { animation: none !important; }
@@ -221,9 +221,14 @@
       box-shadow: 0 12px 26px -14px rgba(214,40,40,0.65);
     }
     .acquire:hover .diamond { background: #fff; }
+    .acquire-slogan {
+      align-self: center; margin: 0 0 clamp(16px, 2.5vw, 26px); text-align: center;
+      font-family: var(--font-display); font-style: italic;
+      font-size: 14px; line-height: 1.4; color: var(--ink-55);
+    }
 
     /* staged entrance order: notice → topbar → title → chat → closing → revenue → footer → CTA */
-    .acquire, .topbar, .hero-left, .hero-right, .closing, .revenue, .foot, .cta-pill, .studio-mark {
+    .acquire, .acquire-slogan, .topbar, .hero-left, .hero-right, .closing, .revenue, .foot, .cta-pill, .studio-mark {
       animation: scRise .7s cubic-bezier(.2,.7,.2,1) both;
     }
     .studio-mark { animation-delay: .72s; }
@@ -738,6 +743,7 @@
         Premium domain available for acquisition
         <span class="enquire">· Enquire <span class="arrow" aria-hidden="true">→</span></span>
       </a>
+      <p class="acquire-slogan">Don&rsquo;t buy a domain. Own the verb.</p>
 
       <!-- ===================== TOP BAR ===================== -->
       <header class="topbar">
@@ -877,7 +883,6 @@
               <p>Premium placement, clearly labeled.</p>
             </div>
           </div>
-          <p class="revenue-slogan">Don't buy a domain. Own the verb.</p>
           <p class="revenue-proof">The flagship already runs a working affiliate attribution system — this domain is ready for the same engine.</p>
         </section>
 
