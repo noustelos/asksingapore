@@ -123,7 +123,7 @@
     }
     @media (prefers-reduced-motion: reduce) {
       .mark, .mark .diamond, .send-btn, .availability .dot, .chat-status .live, .clock-meta .dot { animation: none !important; }
-      .acquire, .topbar, .hero-left, .hero-right, .closing, .foot, .cta-pill, .studio-mark { animation: none !important; }
+      .acquire, .topbar, .hero-left, .hero-right, .closing, .revenue, .foot, .cta-pill, .studio-mark { animation: none !important; }
       .send-btn::after { display: none; }
       .deco-weave { transition: none !important; }
       .bubble.typing .tdot { animation: none !important; }
@@ -222,17 +222,18 @@
     }
     .acquire:hover .diamond { background: #fff; }
 
-    /* staged entrance order: notice → topbar → title → chat → closing → footer → CTA */
-    .acquire, .topbar, .hero-left, .hero-right, .closing, .foot, .cta-pill, .studio-mark {
+    /* staged entrance order: notice → topbar → title → chat → closing → revenue → footer → CTA */
+    .acquire, .topbar, .hero-left, .hero-right, .closing, .revenue, .foot, .cta-pill, .studio-mark {
       animation: scRise .7s cubic-bezier(.2,.7,.2,1) both;
     }
-    .studio-mark { animation-delay: .66s; }
+    .studio-mark { animation-delay: .72s; }
     .topbar     { animation-delay: .08s; }
     .hero-left  { animation-delay: .18s; }
     .hero-right { animation-delay: .32s; }
     .closing    { animation-delay: .46s; }
-    .foot       { animation-delay: .56s; }
-    .cta-pill   { animation-delay: .66s; }
+    .revenue    { animation-delay: .54s; }
+    .foot       { animation-delay: .64s; }
+    .cta-pill   { animation-delay: .72s; }
 
     /* ---- top bar ---- */
     .topbar {
@@ -538,6 +539,48 @@
       font-size: 18px; color: var(--ink-55);
     }
 
+    /* ---- revenue potential — monetisation paths for a prospective buyer.
+       Honesty rule: paths + flagship proof only, no revenue promises ---- */
+    .revenue {
+      align-self: center; width: 100%; max-width: 940px;
+      display: flex; flex-direction: column; align-items: center; gap: 26px;
+      text-align: center;
+    }
+    .revenue .kicker {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.4em; text-transform: uppercase;
+      color: var(--jade); padding-left: 0.4em;
+    }
+    .revenue-title {
+      margin: 12px 0 0; font-family: var(--font-display); font-weight: 500;
+      font-size: clamp(23px, 2.8vw, 32px); letter-spacing: -0.01em; color: var(--ink);
+    }
+    .revenue-grid {
+      width: 100%; display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;
+    }
+    .revenue-card {
+      padding: 18px 22px; border-radius: 15px;
+      border: 1px solid var(--mist); background: #fff;
+      box-shadow: 0 20px 44px -30px rgba(22,36,30,0.30), 0 2px 8px -5px rgba(22,36,30,0.10);
+      text-align: left;
+      transition: border-color .18s ease;
+    }
+    .revenue-card:hover { border-color: var(--jade-line); }
+    .revenue-card .label-row { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
+    .revenue-card .pip { width: 5px; height: 5px; border-radius: 50%; background: var(--jade); flex: 0 0 auto; }
+    .revenue-card h3 {
+      margin: 0; font-family: var(--font-ui); font-size: 12px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--jade);
+    }
+    .revenue-card p { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--ink-70); }
+    .revenue-card p a { color: var(--jade); font-weight: 500; text-decoration: none; transition: color .18s ease; }
+    .revenue-card p a:hover { color: var(--jade-deep); text-decoration: underline; text-underline-offset: 3px; }
+    .revenue-proof {
+      margin: 2px 0 0; max-width: 620px;
+      font-family: var(--font-display); font-style: italic;
+      font-size: 17.5px; line-height: 1.55; color: var(--ink-55);
+    }
+
     /* ---- footer: sister-domain links ---- */
     .foot {
       display: flex; flex-direction: column; align-items: center; gap: 12px;
@@ -609,6 +652,8 @@
       /* chips wrap to a 2×2 grid when the chat is full-width */
       .chips { flex-wrap: wrap; }
       .chip { flex: 1 1 calc(50% - 4px); }
+      /* revenue cards stack to a single column */
+      .revenue-grid { grid-template-columns: 1fr; }
       /* the grove recedes so stacked text stays quiet over it */
       .deco-grove { width: 80vw; opacity: 0.45; }
       /* attribution joins the flow under the footer instead of floating
@@ -801,6 +846,34 @@
           </div>
           <p class="tagline">Your AI concierge, made for Singapore, in your pocket — ready any time, any day.</p>
         </div>
+
+        <!-- revenue potential: monetisation paths for a prospective buyer.
+             Honesty rule: paths + flagship proof only — no earnings claims -->
+        <section class="revenue" aria-labelledby="revenue-title">
+          <div class="revenue-head">
+            <div class="kicker">Revenue Potential</div>
+            <h2 class="revenue-title" id="revenue-title">What this domain could become</h2>
+          </div>
+          <div class="revenue-grid">
+            <div class="revenue-card">
+              <div class="label-row"><span class="pip"></span><h3>Affiliate commissions</h3></div>
+              <p>Tours, transfers and experiences — proven on <a href="https://asksantorini.ai" target="_blank" rel="noopener">asksantorini.ai</a>, the network flagship.</p>
+            </div>
+            <div class="revenue-card">
+              <div class="label-row"><span class="pip"></span><h3>Featured listings</h3></div>
+              <p>Local businesses pay for presence in the concierge's recommendations.</p>
+            </div>
+            <div class="revenue-card">
+              <div class="label-row"><span class="pip"></span><h3>Booking integration</h3></div>
+              <p>End-to-end reservations, on commission or a flat fee.</p>
+            </div>
+            <div class="revenue-card">
+              <div class="label-row"><span class="pip"></span><h3>Sponsored answers</h3></div>
+              <p>Premium placement, clearly labeled.</p>
+            </div>
+          </div>
+          <p class="revenue-proof">The flagship already runs a working affiliate attribution system — this domain is ready for the same engine.</p>
+        </section>
 
         <!-- footer: sister concierges -->
         <footer class="foot">
