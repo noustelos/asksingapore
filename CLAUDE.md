@@ -34,7 +34,7 @@ python3 -m http.server 8000   # then visit http://localhost:8000
 The page is one `.hero` section with three layers:
 
 1. **Ambient decoration** (`.deco-*`, `aria-hidden`) — the signature `.deco-grove` "Supertree Grove" (thin jade line-art, inline SVG, bottom-left; Gardens-by-the-Bay canopy architecture) plus the `.deco-weave` adaptive theme layer (transparent by default, dissolves in a pattern per query theme). Purely cosmetic.
-2. **`.inner`** — the `.acquire` domain-for-sale pill, the topbar (brand mark + wordmark + SGT clock) and `.main`, which holds the `.hero-row` (the "Just Ask" title on the left, the `.chat` mock window on the right), the `.closing` block, and the `.foot` sister-domain footer.
+2. **`.inner`** — the `.acquire` domain-for-sale pill, the topbar (brand mark + wordmark + SGT clock) and `.main`, which holds the `.hero-row` (the "Just Ask" title on the left, the `.chat` mock window on the right), the `.closing` block, the `.revenue` section, and the `.foot` sister-domain footer. Revenue section ("What this domain could become"): 4 monetisation paths + flagship proof, end-of-scroll before the footer, effortless-card idiom, no earnings claims. Pattern for the sibling demos (Paros/Australia/Sydney/NewYork).
 3. **Floating anchors** — the `.cta-pill` "Ask Singapore AI" button (bottom right) and the `.studio-mark` Noustelos Studio attribution (bottom left; joins the flow under the footer on narrow screens).
 
 ### Styling system
