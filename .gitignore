@@ -3,3 +3,6 @@ node_modules/
 
 # local wrangler CLI cache (account id + project name)
 .wrangler/
+
+# local secrets for `wrangler pages dev` (AGNES_API_KEY) — never commit
+.dev.vars

@@ -1,0 +1,4 @@
+# Copy to .dev.vars (gitignored) for local dev with `npx wrangler pages dev .`
+# Production: set the same secret in the Cloudflare Pages dashboard
+# (project → Settings → Variables and Secrets → AGNES_API_KEY).
+AGNES_API_KEY=your-agnes-api-key-here

@@ -116,7 +116,7 @@
       from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    /* scripted demo: typing dots while the bot 'thinks' */
+    /* typing dots while the concierge thinks */
     @keyframes scTypingDot {
       0%, 60%, 100% { opacity: 0.25; transform: translateY(0); }
       30%           { opacity: 1;    transform: translateY(-3px); }
@@ -431,7 +431,7 @@
       font-size: 14.5px; line-height: 1.5; color: var(--ink);
     }
 
-    /* conversation log — the scripted demo appends bubbles here.
+    /* conversation log — live replies append bubbles here.
        Nested scroll keeps the card (and page layout) stable as the
        exchange grows. */
     .chat-log {
@@ -796,7 +796,7 @@
                 <div class="chat-header">
                   <div class="chat-status">
                     <span class="live" aria-hidden="true"></span>
-                    <span class="label">Live Demo · Ask Singapore AI</span>
+                    <span class="label">Live · Powered by Agnes AI</span>
                   </div>
                   <div class="chat-actions">
                     <button class="icon-btn" aria-label="Refresh conversation">⟳</button>
@@ -816,7 +816,7 @@
 
                 <div class="divider"></div>
 
-                <!-- conversation log: the scripted demo appends bubbles here;
+                <!-- conversation log: live replies append bubbles here;
                      the greeting is the first bot message -->
                 <div class="chat-log" id="chat-log">
                   <div class="bubble-row">
@@ -833,13 +833,13 @@
                     <button class="chip" data-prefill="Rent a car for a day trip tomorrow.">Car rental</button>
                     <button class="chip" data-prefill="Directions to Gardens by the Bay.">Directions</button>
                   </div>
-                  <div class="caption">This chat is a demo with scripted answers — see our live AI concierge at <a href="https://asksantorini.ai" target="_blank" rel="noopener noreferrer">AskSantorini.ai</a>.</div>
+                  <div class="caption">Answers are generated live by <a href="https://agnes-ai.com" target="_blank" rel="noopener noreferrer">Agnes AI</a>, Singapore's homegrown model — AI can err, so double-check key details.</div>
                 </div>
 
                 <!-- input -->
                 <div class="input-row">
                   <!-- TODO: wire to backend stub — chat/AI/network logic connected separately later -->
-                  <input id="ask-input" type="text" placeholder="Where to eat tonight?" autocomplete="off" />
+                  <input id="ask-input" type="text" placeholder="Where to eat tonight?" autocomplete="off" maxlength="600" />
                   <button id="ask-send" class="send-btn">Send</button>
                 </div>
 
@@ -913,10 +913,10 @@
 
   <script>
     // ============================================================
-    // SCRIPTED DEMO behaviour — all client-side, ZERO network.
-    // Four hardcoded Q→A pairs preview the concierge concept; any
-    // other input gets the fallback line. The real backend later
-    // replaces the SCRIPTED map + respond() — the hooks stay put.
+    // LIVE CONCIERGE — the chat talks to /api/chat (a Cloudflare
+    // Pages Function in this repo) which proxies Agnes AI with SSE
+    // streaming. Same-origin, no CORS. Everything else on the page
+    // (clock, themes, decoration) stays local and network-free.
     // ============================================================
     (function () {
       var input = document.getElementById('ask-input');
@@ -958,28 +958,15 @@
         if (e.animationName === 'scSendSpark') send.classList.remove('spark');
       });
 
-      // --- Scripted concierge: hardcoded Q→A map (no AI, no network) ---
+      // --- Live concierge: POST /api/chat → Agnes AI, SSE streamed ---
       var log = document.getElementById('chat-log');
-      var SCRIPTED = [
-        { q: "Where should I eat tonight near Marina Bay?",
-          a: "For dinner near Marina Bay, it depends on the mood. For something special with a view, Lavo at Marina Bay Sands does Italian over the skyline. If you'd rather be among locals, the hawker stalls at Lau Pa Sat fire up satay street after 7pm — smoky, cheap, unforgettable. And for a quiet, refined evening, Saint Pierre serves modern French by the water. Want me to narrow it by cuisine or budget?" },
-        { q: "Find me a boutique hotel in Tiong Bahru.",
-          a: "Tiong Bahru is a lovely choice — Singapore's artsy heritage quarter, all Art Deco walk-ups and indie cafés. The Nostalgia Hotel captures the neighbourhood's vintage charm, while a stay near Yong Siak Street puts you steps from the famous bakery and bookshop. Calmer than Orchard, but still ten minutes to the centre. Shall I check availability for your dates?" },
-        { q: "Rent a car for a day trip tomorrow.",
-          a: "For a day trip, a rental gives you the most freedom — though Singapore's compact, so factor in entry permits if you're crossing into Malaysia. Companies like Hertz and local outfits near the CBD offer daily rates, and most day-trippers head up to Johor Bahru or out to the East Coast. Where were you thinking of driving?" },
-        { q: "Directions to Gardens by the Bay.",
-          a: "Gardens by the Bay is easiest by MRT — take the Downtown Line to Bayfront station, then a signposted five-minute walk. Coming from Marina Bay Sands? You can stroll across the Dragonfly Bridge in about ten minutes. Driving? There's paid parking on-site. Want the route from where you are now?" }
-      ];
-      var FALLBACK = "That's exactly the kind of question the full AskSingapore would answer live. This is a preview — try one of the suggestions above to see it in action, or reach out if you'd like the complete concierge for your own project.";
+      var HISTORY = [];      // prior {role, content} turns sent for context
+      var HISTORY_MAX = 10;  // matches the server-side cap
+      var ERROR_LINE = "AskSingapore AI is momentarily busy — please try again in a minute.";
+      var BUSY_LINE = "The concierge is answering a lot of questions right now — please try again shortly.";
       var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       var busy = false; // one exchange at a time
 
-      function normalize(s) { return s.trim().replace(/\s+/g, ' ').toLowerCase(); }
-      function answerFor(text) {
-        var q = normalize(text);
-        for (var i = 0; i < SCRIPTED.length; i++) if (normalize(SCRIPTED[i].q) === q) return SCRIPTED[i].a;
-        return FALLBACK;
-      }
       function scrollLog(smooth) {
         log.scrollTo({ top: log.scrollHeight, behavior: (smooth && !reduceMotion) ? 'smooth' : 'auto' });
       }
@@ -1000,47 +987,119 @@
         scrollLog(true);
       }
       // word-by-word reveal — the 'AI is writing' feel, kept cheap:
-      // one span per word, opacity-only transition. The streaming itself
+      // real tokens stream in from the API in uneven chunks, but a paced
+      // queue reveals them at the same steady cadence as before — one
+      // span per word, opacity-only transition. The streaming itself
       // plays under reduced motion too — it's content presentation, not a
       // motion trigger; the CSS guard swaps the fade for an instant pop
       // and we tighten the pace a touch.
-      function revealAnswer(bubble, text, done) {
-        var words = text.split(' ');
-        var i = 0;
+      function makeReveal(bubble, done) {
+        var queue = [], closed = false, first = true;
         var timer = window.setInterval(function () {
+          if (!queue.length) {
+            if (closed) { window.clearInterval(timer); done(); }
+            return; // stream is ahead of us or momentarily quiet
+          }
           var span = document.createElement('span'); span.className = 'w';
-          span.textContent = (i ? ' ' : '') + words[i];
+          span.textContent = (first ? '' : ' ') + queue.shift();
+          first = false;
           bubble.appendChild(span);
           void span.offsetWidth; // flush so the fade-in transition runs
           span.classList.add('in');
           log.scrollTop = log.scrollHeight; // keep the tail in view
-          if (++i >= words.length) { window.clearInterval(timer); done(); }
         }, reduceMotion ? 30 : 45);
+        return {
+          push: function (word) { if (word) queue.push(word); },
+          close: function () { closed = true; }
+        };
       }
+
+      // Minimal SSE reader for the OpenAI-style stream /api/chat relays.
+      function streamChat(payload, onDelta, onDone, onError) {
+        fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(function (res) {
+          if (!res.ok || !res.body) { onError(res.status); return; }
+          var reader = res.body.getReader();
+          var dec = new TextDecoder();
+          var buf = '';
+          function pump() {
+            return reader.read().then(function (r) {
+              if (r.done) { onDone(); return; }
+              buf += dec.decode(r.value, { stream: true });
+              var lines = buf.split('\n');
+              buf = lines.pop(); // keep the trailing partial line
+              for (var i = 0; i < lines.length; i++) {
+                var line = lines[i].trim();
+                if (line.indexOf('data:') !== 0) continue;
+                var data = line.slice(5).trim();
+                if (data === '[DONE]') { onDone(); return; }
+                try {
+                  var delta = JSON.parse(data).choices[0].delta;
+                  if (delta && delta.content) onDelta(delta.content);
+                } catch (e) { /* tolerate keep-alives / partial frames */ }
+              }
+              return pump();
+            });
+          }
+          return pump();
+        }).catch(function () { onError(0); });
+      }
+
       function respond(text) {
         busy = true;
         var row = botRow();
         var bubble = row.querySelector('.bubble');
-        var finish = function () {
-          revealAnswer(bubble, answerFor(text), function () { busy = false; });
-        };
-        if (reduceMotion) {
-          // motion triggers stay off: no dots pulse, no smooth scroll —
-          // straight into the streaming reveal
-          log.appendChild(row);
-          scrollLog(false);
-          finish();
-          return;
-        }
+        // typing dots while we wait for the first token (the CSS
+        // reduced-motion guard stops their pulse; the smooth scroll
+        // is already gated inside scrollLog)
         bubble.className = 'bubble typing';
         bubble.innerHTML = '<span class="tdot"></span><span class="tdot"></span><span class="tdot"></span>';
         log.appendChild(row);
         scrollLog(true);
-        window.setTimeout(function () {
-          bubble.className = 'bubble';
-          bubble.innerHTML = '';
-          finish();
-        }, 800);
+
+        var reveal = null, answer = '', carry = '', settled = false;
+        function ensureReveal() {
+          if (!reveal) {
+            bubble.className = 'bubble';
+            bubble.innerHTML = '';
+            reveal = makeReveal(bubble, function () { busy = false; });
+          }
+          return reveal;
+        }
+        function showLine(line) {
+          var r = ensureReveal();
+          if (answer) r.push('—'); // partial answer got cut: mark the break
+          line.split(' ').forEach(function (w) { r.push(w); });
+          r.close();
+        }
+        streamChat(
+          { message: text, history: HISTORY },
+          function (chunk) { // onDelta — split into words, carry partials
+            if (settled) return;
+            answer += chunk;
+            var words = (carry + chunk).split(/\s+/);
+            carry = words.pop(); // may be an incomplete word
+            var r = ensureReveal();
+            for (var i = 0; i < words.length; i++) r.push(words[i]);
+          },
+          function () { // onDone
+            if (settled) return; settled = true;
+            if (!answer) { showLine(ERROR_LINE); return; }
+            var r = ensureReveal();
+            r.push(carry); carry = '';
+            HISTORY.push({ role: 'user', content: text },
+                         { role: 'assistant', content: answer });
+            if (HISTORY.length > HISTORY_MAX) HISTORY = HISTORY.slice(-HISTORY_MAX);
+            r.close();
+          },
+          function (status) { // onError — honest line, no fake answers
+            if (settled) return; settled = true;
+            showLine(status === 429 ? BUSY_LINE : ERROR_LINE);
+          }
+        );
       }
       function submitQuery() {
         var text = input.value.trim();
@@ -1081,7 +1140,7 @@
         applyTheme(detectTheme(input.value));
       });
 
-      // Enter mirrors the Send click — same scripted flow.
+      // Enter mirrors the Send click — same live flow.
       input.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' && input.value.trim().length > 0) submitQuery();
       });
@@ -1099,15 +1158,13 @@
         });
       });
 
-      // Send — scripted reply for the demo questions, fallback otherwise.
-      // TODO: the real backend replaces respond() (submit to the concierge).
+      // Send — live reply via /api/chat for any question.
       send.addEventListener('click', function () {
         if (input.value.trim().length > 0) submitQuery();
         else sparkSend(); // empty input: physical feedback only
       });
 
-      // Floating CTA — placeholder hook only.
-      // TODO: wire to backend stub (open the concierge experience).
+      // Floating CTA — jump into the conversation.
       document.getElementById('cta-ask').addEventListener('click', function () {
         input.focus();
       });

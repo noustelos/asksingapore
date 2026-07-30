@@ -2,7 +2,7 @@
 
 > Singapore AI concierge — a premium .ai domain presented by Noustelos Studio as part of the "Ask" concierge network. The domain asksingapore.ai is available for acquisition.
 
-This is a single-page, design-only site. The on-page chat is a scripted demo, not a live AI — the network's live concierge runs at asksantorini.ai. There is no backend, no data collection, and no user accounts.
+This is a single-page site with a live AI chat: answers are generated in real time by Agnes AI (agnes-ai.com), a Singapore-built model, via a lightweight serverless proxy on this domain. The chat is a live demonstration of what asksingapore.ai could become in a buyer's hands. AI answers can contain inaccuracies. There is no data collection and there are no user accounts.
 
 ## Acquisition
 

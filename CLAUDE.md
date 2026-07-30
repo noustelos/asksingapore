@@ -4,18 +4,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A **design-only** landing page for asksingapore.ai — part of the Noustelos Studio "Ask" network (asksantorini.ai · asksingapore.ai · asksydney.ai · askaustralia.ai · asknewyork.ai · askmykonos.ai). The page lives in a single file: [index.html](index.html) — vanilla HTML/CSS/JS, no frameworks, no build step, no backend, no dependencies — plus static discovery files at the root ([robots.txt](robots.txt), [sitemap.xml](sitemap.xml), [llms.txt](llms.txt)) and the social-preview pair ([og-image.png](og-image.png) + [og-card.html](og-card.html)). Standalone: zero sister-site dependency (sister links only).
+A landing page **with a live AI chat** for asksingapore.ai — part of the Noustelos Studio "Ask" network (asksantorini.ai · asksingapore.ai · asksydney.ai · askaustralia.ai · asknewyork.ai · askmykonos.ai). The page lives in a single file: [index.html](index.html) — vanilla HTML/CSS/JS, no frameworks, no build step, no dependencies — plus one serverless endpoint ([functions/api/chat.js](functions/api/chat.js), a Cloudflare Pages Function proxying Agnes AI), and static discovery files at the root ([robots.txt](robots.txt), [sitemap.xml](sitemap.xml), [llms.txt](llms.txt)) and the social-preview pair ([og-image.png](og-image.png) + [og-card.html](og-card.html)). Standalone: zero sister-site dependency (sister links only).
 
-There is intentionally **no AI or network logic**. The chat is a **SCRIPTED DEMO** (ΦΑΣΗ 2, shipped): four hardcoded Q→A pairs matching the chip prefills play a typing-dots + word-by-word reveal; any other input gets a fallback line. All client-side — the real backend later replaces the `SCRIPTED` map + `respond()` in the inline script (the hooks stay put). Treat this repo as the visual source of truth; do not add fetch/API/state-management code unless explicitly asked.
+The chat is **LIVE** (ΦΑΣΗ 3, shipped): the inline script POSTs to `/api/chat` — a Cloudflare Pages Function in this repo ([functions/api/chat.js](functions/api/chat.js)) that proxies **Agnes AI** (`agnes-2.5-flash`, OpenAI-compatible, `https://apihub.agnes-ai.com/v1/chat/completions`) with SSE streaming, a Singapore-concierge system prompt, input guards and per-IP rate limiting. Same-origin, so no CORS. The `AGNES_API_KEY` secret lives in the Pages dashboard (production) and `.dev.vars` (local, gitignored) — never in the repo. Everything else on the page (clock, themes, decoration) stays local and network-free; don't add further network calls unless explicitly asked.
 
-**Honesty rule: the demo must not fake live-AI signals.** The bold `.caption` under the category chips discloses the scripted demo and links to the live concierge at [asksantorini.ai](https://asksantorini.ai) (the only disclosure line — there is no separate `.disclaimer` anymore), and the chat-window status label reads "Live Demo · Ask Singapore AI". Keep both honest until the real backend lands.
+**Honesty rule: no fake signals, no false promises.** The `.caption` under the category chips discloses that answers are generated live by Agnes AI and can err; the chat-window status label reads "Live · Powered by Agnes AI". The system prompt forbids fake bookings and guessing live facts; API failures show an honest busy/error line (never a canned answer posing as live). Keep all of this truthful — and keep [llms.txt](llms.txt) in sync with reality.
 
 The commercial goal of the page is to **sell the domain**: the `.acquire` pill above the topbar states availability and links out via `mailto:` to `info@asksantorini.ai` (the only outbound contact — keep it a plain mailto, no forms; switch to `info@asksingapore.ai` once that mailbox is set up). The `.foot` footer links to the five sister domains [asksantorini.ai](https://asksantorini.ai), [asksydney.ai](https://asksydney.ai), [askaustralia.ai](https://askaustralia.ai), [asknewyork.ai](https://asknewyork.ai) and [askmykonos.ai](https://askmykonos.ai), and the bottom-left `.studio-mark` links to [noustelos.gr](https://noustelos.gr) — all signal the brand network. `<head>` carries the canonical URL, Open Graph/Twitter cards (pointing at the root [og-image.png](og-image.png), 1200×630 — the repo's only binary asset), an inline SVG favicon, and JSON-LD, so shared links preview well for prospective buyers.
 
 ### Discovery / SEO files
 
 - [og-image.png](og-image.png) is a headless-Chrome screenshot of [og-card.html](og-card.html), a standalone card mirroring the hero (brand lockup, "Just Ask", tagline, vermilion acquisition pill, Supertree Grove line-art). To regenerate, edit og-card.html and follow the render commands commented at the top of that file (the card sits in a 20px paper margin inside a 1240×670 window and gets center-cropped past headless Chrome's rounded window corners — don't skip the crop). View the final image before committing; keep its copy/colors in sync with the page.
-- [robots.txt](robots.txt) (allow-all + sitemap pointer), [sitemap.xml](sitemap.xml) (single URL) and [llms.txt](llms.txt) (plain-language summary for AI crawlers — sale status, contact, sister network) handle search/LLM discovery. **Keep the sister-domain list in llms.txt in sync with the footer**, and keep llms.txt honest: it must present the chat as a scripted demo, never as a live AI.
+- [robots.txt](robots.txt) (allow-all + sitemap pointer), [sitemap.xml](sitemap.xml) (single URL) and [llms.txt](llms.txt) (plain-language summary for AI crawlers — sale status, contact, sister network) handle search/LLM discovery. **Keep the sister-domain list in llms.txt in sync with the footer**, and keep llms.txt honest: it presents the chat as live answers generated by Agnes AI (which can err) — keep that description in sync with what actually ships.
 
 ## Deploy
 
@@ -23,11 +23,14 @@ The commercial goal of the page is to **sell the domain**: the `.acquire` pill a
 
 ## Run
 
-No build. Open [index.html](index.html) directly in a browser, or serve it:
+No build. For the full experience (page + live chat) serve it with wrangler, which runs the Pages Function locally and reads `AGNES_API_KEY` from `.dev.vars` (copy [.dev.vars.example](.dev.vars.example)):
 
 ```bash
-python3 -m http.server 8000   # then visit http://localhost:8000
+npx wrangler pages dev .      # http://localhost:8788 — page + /api/chat
+node dev-server.mjs           # same, for macOS < 13.5 where workerd can't run
 ```
+
+[dev-server.mjs](dev-server.mjs) is a dev-only Node shim (never deployed) that adapts the same Function onto Node's http server. Opening [index.html](index.html) directly (or via `python3 -m http.server`) still shows the page, but the chat will answer with its honest error line since `/api/chat` isn't there.
 
 ## Architecture
 
@@ -51,19 +54,21 @@ Animations are defined as `@keyframes sc*` near the top of the `<style>` block (
 
 ### Interactive behaviour (client-side only, no network)
 
-The inline `<script>` drives the scripted demo and presentation feedback — still zero AI/network. Keep additions on this side of that line:
+The inline `<script>` drives the live chat and presentation feedback. The chat is the **only** network call on the page — keep everything else local:
 
-- **Scripted chat** — `#chat-log` is a nested-scroll message list (max-height, thin jade scrollbar; the greeting is the first bot message). `submitQuery()` appends the user bubble (right-aligned, deeper mist); `respond()` shows typing dots (~800ms) then streams the answer word-by-word at 45ms/word (opacity-only spans). Under `prefers-reduced-motion` the **streaming still plays** (30ms/word, instant pop) — only the dots pulse and smooth scrolling are dropped. Copy lives in the `SCRIPTED` array + `FALLBACK` string.
+- **Live chat** — `#chat-log` is a nested-scroll message list (max-height, thin jade scrollbar; the greeting is the first bot message). `submitQuery()` appends the user bubble (right-aligned, deeper mist); `respond()` shows typing dots until the first token, then `streamChat()` reads the SSE stream from `/api/chat` and a paced word queue (`makeReveal`) reveals it word-by-word at 45ms/word (opacity-only spans) — real tokens, steady cadence. Conversation context lives in `HISTORY` (capped at 10 turns, mirrored server-side). Failures show `ERROR_LINE`/`BUSY_LINE` — honest lines, never canned answers. Under `prefers-reduced-motion` the **streaming still plays** (30ms/word, instant pop) — only the dots pulse and smooth scrolling are dropped.
 - **Send button** toggles `.is-ready` (vermilion glow) when `#ask-input` holds text, and replays a `.spark` sweep; Send/Enter with text runs `submitQuery()`.
 - **Adaptive background** — `detectTheme()` matches query keywords and swaps a `theme-nature` / `theme-luxury` class on `.hero`, which dissolves a faint pattern into `.deco-weave` (jade leaf texture / woven pinstripe) via a brief `weave-shift` dissolve. Keyword→theme maps live in the `THEMES` array.
 - **Live SGT clock** — `#sgt-date` + `#sgt-clock` in the topbar show the current Singapore date and time via `Intl.DateTimeFormat({ timeZone: 'Asia/Singapore' })` (computed locally, no network), refreshed on a 15s interval. Editorial lockup, top to bottom: a jade `.clock-date` line, the large light `.clock-time` numeral with a dimmed `.cc` colon, then a small tracked `.clock-meta` line (live dot · `SGT` · "24/7 Islandwide Availability"). `tickClock()` writes both the date text and the `HH<span class="cc">:</span>MM` markup each tick.
 
-### Backend wiring hooks (placeholders only)
+### Backend (`/api/chat`) — the one live wire
 
-These IDs/hooks are where the real backend connects later (replacing the scripted `respond()`) — keep them in place:
+[functions/api/chat.js](functions/api/chat.js) is a Cloudflare Pages Function (deployed automatically with the same git push as the page). It validates `{ message, history }` (600-char message cap — mirrored by the input's `maxlength` — 10-turn history cap), applies a per-isolate rate limit (6 req/min per IP, 18 req/min global soft cap — the free Agnes tier allows ~20 RPM account-wide), injects the Singapore-concierge system prompt, calls Agnes AI with `stream: true`, and passes the SSE stream through untouched. Errors map to honest JSON (`400`/`429`/`502`/`503`/`504`) that the frontend turns into `ERROR_LINE`/`BUSY_LINE`. Secret: `wrangler` reads `.dev.vars` locally; production key is set in the Pages dashboard (Settings → Variables and Secrets → `AGNES_API_KEY`).
 
-- `#ask-input` — chat input field
-- `#ask-send` — Send button (runs the scripted `submitQuery()`)
-- `#cta-ask` — floating CTA pill
+Frontend IDs/hooks (keep them in place):
+
+- `#ask-input` — chat input field (`maxlength="600"`)
+- `#ask-send` — Send button (runs `submitQuery()`)
+- `#cta-ask` — floating CTA pill (focuses the input)
 - `.chip[data-prefill]` — category chips: **prefill** `#ask-input`, then auto-send after 300ms (unless a reply is playing)
-- `#sgt-temp` — local-weather line under the clock; a static mockup (`29°C · Partly Cloudy`) awaiting live data (real weather needs an API, which is out of the design-only scope)
+- `#sgt-temp` — local-weather line under the clock; a static mockup (`29°C · Partly Cloudy`) awaiting live data (real weather needs an API — not wired yet)
