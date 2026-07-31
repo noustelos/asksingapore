@@ -135,11 +135,14 @@ export async function onRequestPost(context) {
   // webhook is configured, tee the stream and reassemble the answer
   // server-side after it ends — fire-and-forget via waitUntil, so the
   // visitor is never delayed and a webhook failure never breaks a reply.
+  // Secret name: LOG_WEBHOOK_URL canonical; AGNES_WEBHOOK_URL accepted
+  // because that's what the production dashboard entry was named.
+  const logUrl = env.LOG_WEBHOOK_URL || env.AGNES_WEBHOOK_URL;
   let bodyOut = upstream.body;
-  if (env.LOG_WEBHOOK_URL) {
+  if (logUrl) {
     const [toClient, toLog] = upstream.body.tee();
     bodyOut = toClient;
-    context.waitUntil(logExchange(env.LOG_WEBHOOK_URL, message, toLog).catch(() => {}));
+    context.waitUntil(logExchange(logUrl, message, toLog).catch(() => {}));
   }
 
   return new Response(bodyOut, {
