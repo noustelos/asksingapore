@@ -59,7 +59,8 @@ function jsonError(status, message) {
   });
 }
 
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost(context) {
+  const { request, env } = context;
   if (!env.AGNES_API_KEY) {
     return jsonError(503, 'Concierge is not configured yet.');
   }
@@ -130,14 +131,58 @@ export async function onRequestPost({ request, env }) {
     return jsonError(502, 'Concierge is unreachable right now.');
   }
 
-  // Pass the SSE stream straight through to the browser.
-  return new Response(upstream.body, {
+  // Pass the SSE stream straight through to the browser. When the log
+  // webhook is configured, tee the stream and reassemble the answer
+  // server-side after it ends — fire-and-forget via waitUntil, so the
+  // visitor is never delayed and a webhook failure never breaks a reply.
+  let bodyOut = upstream.body;
+  if (env.LOG_WEBHOOK_URL) {
+    const [toClient, toLog] = upstream.body.tee();
+    bodyOut = toClient;
+    context.waitUntil(logExchange(env.LOG_WEBHOOK_URL, message, toLog).catch(() => {}));
+  }
+
+  return new Response(bodyOut, {
     status: 200,
     headers: {
       'Content-Type': 'text/event-stream; charset=utf-8',
       'Cache-Control': 'no-store',
       'X-Accel-Buffering': 'no',
     },
+  });
+}
+
+// Anonymous Q&A logging to a Google Sheet via an Apps Script web app.
+// Privacy: question + answer only — no IP, no identifiers (PDPA-friendly);
+// the timestamp is stamped by the Apps Script on arrival, in SGT.
+async function logExchange(webhookUrl, question, stream) {
+  const reader = stream.getReader();
+  const dec = new TextDecoder();
+  let buf = '';
+  let answer = '';
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += dec.decode(value, { stream: true });
+    const lines = buf.split('\n');
+    buf = lines.pop();
+    for (const raw of lines) {
+      const line = raw.trim();
+      if (!line.startsWith('data:')) continue;
+      const data = line.slice(5).trim();
+      if (data === '[DONE]') continue;
+      try {
+        const delta = JSON.parse(data).choices[0].delta;
+        if (delta && delta.content) answer += delta.content;
+      } catch { /* tolerate keep-alives / partial frames */ }
+    }
+  }
+  if (!answer) return; // nothing worth a row
+  await fetch(webhookUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ question, answer }),
+    signal: AbortSignal.timeout(10000),
   });
 }
 

@@ -35,7 +35,7 @@ createServer(async (req, res) => {
       body: chunks.length ? Buffer.concat(chunks) : undefined,
     });
     const handler = req.method === 'POST' ? onRequestPost : onRequest;
-    const out = await handler({ request, env });
+    const out = await handler({ request, env, waitUntil: (p) => Promise.resolve(p).catch(() => {}) });
     res.writeHead(out.status, Object.fromEntries(out.headers));
     if (out.body) for await (const chunk of out.body) res.write(chunk);
     res.end();

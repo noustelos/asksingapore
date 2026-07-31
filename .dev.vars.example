@@ -2,3 +2,6 @@
 # Production: set the same secret in the Cloudflare Pages dashboard
 # (project → Settings → Variables and Secrets → AGNES_API_KEY).
 AGNES_API_KEY=your-agnes-api-key-here
+# Optional: Google Apps Script web-app URL for anonymous Q&A logging.
+# Leave unset to disable logging entirely.
+LOG_WEBHOOK_URL=
