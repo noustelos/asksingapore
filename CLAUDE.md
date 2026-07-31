@@ -54,7 +54,7 @@ Animations are defined as `@keyframes sc*` near the top of the `<style>` block (
 
 ### Interactive behaviour (client-side only, no network)
 
-The inline `<script>` drives the live chat and presentation feedback. The chat is the **only** network call on the page — keep everything else local:
+The inline `<script>` drives the live chat and presentation feedback. The page makes exactly **two** network calls — the chat (`/api/chat`) and the Open-Meteo weather fetch — keep everything else local:
 
 - **Live chat** — `#chat-log` is a nested-scroll message list (max-height, thin jade scrollbar; the greeting is the first bot message). `submitQuery()` appends the user bubble (right-aligned, deeper mist); `respond()` shows typing dots until the first token, then `streamChat()` reads the SSE stream from `/api/chat` and a paced word queue (`makeReveal`) reveals it word-by-word at 45ms/word (opacity-only spans) — real tokens, steady cadence. Conversation context lives in `HISTORY` (capped at 10 turns, mirrored server-side). Failures show `ERROR_LINE`/`BUSY_LINE` — honest lines, never canned answers. Under `prefers-reduced-motion` the **streaming still plays** (30ms/word, instant pop) — only the dots pulse and smooth scrolling are dropped.
 - **Send button** toggles `.is-ready` (vermilion glow) when `#ask-input` holds text, and replays a `.spark` sweep; Send/Enter with text runs `submitQuery()`.
@@ -71,4 +71,4 @@ Frontend IDs/hooks (keep them in place):
 - `#ask-send` — Send button (runs `submitQuery()`)
 - `#cta-ask` — floating CTA pill (focuses the input)
 - `.chip[data-prefill]` — category chips: **prefill** `#ask-input`, then auto-send after 300ms (unless a reply is playing)
-- `#sgt-temp` — local-weather line under the clock; a static mockup (`29°C · Partly Cloudy`) awaiting live data (real weather needs an API — not wired yet)
+- `#sgt-weather` (`#sgt-temp` + `#sgt-cond`) — **live** Singapore weather under the clock via Open-Meteo (free, no key; fetched on load + every 30 min). Honesty: the line ships `hidden` and only appears when real data arrives — on any failure it stays gone; never re-add a hardcoded fallback
