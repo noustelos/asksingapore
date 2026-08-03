@@ -84,7 +84,7 @@
 
       <h2>What actually runs here</h2>
 
-      <p>The architecture is deliberately small. The page itself is a single HTML file — no framework, no build step, no dependencies. The chat posts to one serverless endpoint on this same domain, which forwards the conversation to <a href="https://agnes-ai.com" target="_blank" rel="noopener noreferrer">Agnes AI</a> and streams the reply straight back to the browser, token by token.</p>
+      <p>The architecture is deliberately small. The page itself is a single HTML file — no framework, no build step, no dependencies. The chat posts to one serverless endpoint on this same domain, which forwards the conversation to a third-party AI API (Agnes AI) and streams the reply straight back to the browser, token by token.</p>
 
       <p>Everything else is local. The Singapore clock in the corner is computed in the browser from your device time, not fetched. The page makes exactly two outbound calls in total: the chat itself, and a weather reading for Singapore. That is the whole system.</p>
 
