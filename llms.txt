@@ -2,11 +2,19 @@
 
 > Singapore AI concierge — a premium .ai domain presented by Noustelos Studio as part of the "Ask" concierge network. The domain asksingapore.ai is available for acquisition.
 
-This is a single-page site with a live AI chat: answers are generated in real time by Agnes AI (agnes-ai.com), a Singapore-built model, via a lightweight serverless proxy on this domain. The chat is a live demonstration of what asksingapore.ai could become in a buyer's hands. AI answers can contain inaccuracies. Chat questions and answers are logged anonymously to improve the demo — no IP addresses, no identifiers, no user accounts.
+This is a site with a live AI chat plus a small set of written notes: answers are generated in real time by Agnes AI (agnes-ai.com), a Singapore-based AI company, via a lightweight serverless proxy on this domain. The chat is a live demonstration of what asksingapore.ai could become in a buyer's hands. It cannot make bookings and does not access live prices, availability or navigation; it is instructed to say so rather than guess. AI answers can contain inaccuracies. Chat questions and answers are logged anonymously to improve the demo — no IP addresses, no identifiers, no user accounts.
 
 ## Acquisition
 
-- The domain asksingapore.ai is for sale. Enquiries: info@asksingapore.ai
+- The domain asksingapore.ai is for sale, together with the working concierge and its source. Enquiries: info@asksingapore.ai
+- No asking price is published. The seller invites offers rather than naming a figure.
+
+## Notes (blog)
+
+- [How it works, and why it's for sale](https://asksingapore.ai/blog/): index of the written notes
+- [The concierge that refuses to invent](https://asksingapore.ai/blog/ai-concierge-that-refuses-to-invent.html): the architecture, the hallucination problem, the verified-list guardrails, and what the concierge deliberately cannot do
+- [Own the verb](https://asksingapore.ai/blog/own-the-verb.html): what transfers with the domain, what does not, the monetisation paths open to a buyer, and why no price is published
+- [Singapore, AI and the visitor economy](https://asksingapore.ai/blog/singapore-ai-tourism.html): sourced market context — visitor arrivals, the STB–OpenAI memorandum, Singapore's national AI strategy and the .ai domain market, with counter-arguments included
 
 ## Sister concierges
 
